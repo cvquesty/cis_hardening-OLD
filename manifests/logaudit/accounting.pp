@@ -201,4 +201,118 @@ class cis_hardening::logaudit::accounting {
     line   => '-w /var/run/faillock/ -p wa -k logins',
   }
 
+  # Ensure session initiation information is collected - Section 4.1.9
+  file_line { 'utmp_entry':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /var/run/utmp -p wa -k session',
+  }
+
+  file_line { 'wtmp_entry':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /var/run/wtmp -p wa -k logins',
+  }
+
+  file_line { 'btmp_entry':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /var/run/btmp -p wa -k logins',
+  }
+
+  # Ensure discretionary access control permission modification events are collected - Section 4.1.10
+  file_line { 'chmod_cmds':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod',
+  }
+
+  file_line { 'chown_cmds':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod',
+  }
+
+  file_line { 'xattr_cmds':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod',
+  }
+
+  # Ensure unsuccessful unauthorized file access attempts are collected - Section 4.1.11
+  file_line { 'file_truncate':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access',
+  }
+
+  # Ensure use of privileged commands is collected - Section 4.1.12
+  # Given that elevated privilege commands can only be found via ad-hoc queries
+  # of the filesystem/logfiles, it is not possible to generate the needed audit rules
+  # without orchestration and/or custom facts. Will revisit
+
+  # Ensure succesful filesystem mounts are collected - Section 4.1.13
+  file_line { 'mount_cmds':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
+  }
+
+  # Ensure file deletion events by users are captured - Section 4.1.14
+  file_line { 'file_deletions':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
+  }
+
+  # Ensure changes to system administration scope (sudoers) is collected - Section 4.1.15
+  file_line { 'sudoers_file':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /etc/sudoers -p wa -k scope',
+  }
+
+  file_line { 'sudoers_dir':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /etc/sudoers.d/ -p wa -k scope',
+  }
+
+  # Ensure system administrator actions (sudolog) are collected - Section 4.1.16
+  file_line { 'sudolog':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /var/log/sudo.log -p wa -k actions',
+  }
+
+  # Ensure Kernel module loading and unloading are collected - Section 4.1.17
+  file_line { 'check_insmod':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /sbin/insmod -p x -k modules',
+  }
+
+  file_line { 'check_rmmod':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /sbin/rmmod -p x -k modules',
+  }
+
+  file_line { 'check_modprobe':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-w /sbin/modprobe -p x -k modules',
+  }
+
+  file_line { 'check_modulestate':
+    ensure => 'present',
+    path   => '/etc/audit/audit.rules',
+    line   => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
+  }
+
+  # Ensure the audit configuration is immutable - Section 4.1.18
+  exec { 'make_auditd_immutable':
+    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbn',
+    command => "perl -0777 -pi -e 's/$/ -e 2/' /etc/audit/audit.rules",
+  }
 }
