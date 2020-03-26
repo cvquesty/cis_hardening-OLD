@@ -34,7 +34,7 @@ class cis_hardening::network::edgeprotocols {
     line   => 'install tipc /bin/true',
   }
 
-  #
+  
 
 
 }

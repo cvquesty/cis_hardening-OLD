@@ -11,7 +11,7 @@ class cis_hardening::network::tcpwrappers {
     ensure => 'present',
   }
 
-  # Ensure /etc/hosts.allow is configured - Section 3.4.2, 3.4.4
+  # Ensure /etc/hosts.allow is configured - Section 3.4.2
   file { '/etc/hosts.allow':
     ensure => 'present',
     owner  => 'root',
@@ -19,7 +19,7 @@ class cis_hardening::network::tcpwrappers {
     mode   => '0644',
   }
 
-  # Ensure /etc/hosts.deny is configured - Section 3.4.3, 3.4.5
+  # Ensure /etc/hosts.deny is configured - Section 3.4.3
   #file { '/etc/hosts.deny':
   #  ensure  => 'present',
   #  owner   => 'root',
@@ -30,7 +30,5 @@ class cis_hardening::network::tcpwrappers {
   #
   # NOTE: Ensure hosts.allow exists and is complete before uncommenting the above, or you will lose access
   # to the node.
-
-
 
 }

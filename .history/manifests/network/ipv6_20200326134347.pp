@@ -36,7 +36,6 @@ class cis_hardening::network::ipv6 {
     notify => Exec['restart_sysctl'],
   }
 
-  # Ensure IPv6 is Disabled - Section 3.3.3
-  # Manual procedures related to Grub, requires manual inspection
+  #
 
 }

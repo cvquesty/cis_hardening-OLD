@@ -113,25 +113,8 @@ class cis_hardening::network::netparams {
   }
 
   # Ensure reverse path filtering is enabled - Section 3.2.6
-  file_line { 'reverse_path_filter_all':
+  file_line { 'reverse_path_filter':
     ensure => 'present',
-    path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'net.ipv4.conf.all.rp_filter = 1',
-    notify => Exec['restart_sysctl'],
-  }
-
-  file_line { 'reverse_path_filter_default':
-    ensure => 'present',
-    path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'net.ipv4.conf.default.rp_filter = 1',
-    notify => Exec['restart_sysctl'],
-  }
-
-  # Ensure TCP SYN Cookies is enabled - Section 3.2.8
-  file_line { 'tcp_syncookies':
-    ensure => 'present',
-    path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'net.ipv4.tcp_syncookies = 1',
-    notify => Exec['restart_sysctl'],
+    path   => '/etc/sysctl.d/99-sysctl.conf','
   }
 }
