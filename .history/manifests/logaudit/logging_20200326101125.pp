@@ -79,4 +79,5 @@ class cis_hardening::logaudit::logging {
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => 'find /var/log -type f -exec chmod g-wx,o-rwx {} +',
   }
+
 }

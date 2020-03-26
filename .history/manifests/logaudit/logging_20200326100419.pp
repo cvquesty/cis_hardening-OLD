@@ -64,19 +64,14 @@ class cis_hardening::logaudit::logging {
   # NOTE: syslog-ng is not selected in favor of rsyslog, so this section does not apply if the above
   # section is used. They are mutually exclusive.
 
-  # Ensure rsyslog (or syslog-ng) is installed - Section 4.2.3
+  # Ensure rsyslog (or syslog-ng) is installed
   package { 'rsyslog':
     ensure => 'present',
   }
 
-  # If using syslog-ng:
+  # For syslg-ng:
   # package { 'syslog-ng':
   #   ensure => 'present',
   # }
 
-  # Ensure permissions on all logfiles are configured - Section 4.2.4
-  exec { 'set_logfile_permissions':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'find /var/log -type f -exec chmod g-wx,o-rwx {} +',
-  }
 }
