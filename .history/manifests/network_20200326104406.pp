@@ -9,5 +9,5 @@
 class cis_hardening::network {
 
 
-
+  
 }

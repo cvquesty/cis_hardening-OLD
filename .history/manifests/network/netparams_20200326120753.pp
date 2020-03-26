@@ -96,5 +96,4 @@ class cis_hardening::network::netparams {
     notify => Exec['restart_sysctl'],
   }
 
-  #
 }

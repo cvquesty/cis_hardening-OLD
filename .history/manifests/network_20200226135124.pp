@@ -7,7 +7,4 @@
 # according to published hardening guidelines for CentOS 7.x systems
 #
 class cis_hardening::network {
-
-
-
 }

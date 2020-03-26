@@ -70,31 +70,8 @@ class cis_hardening::network::netparams {
   file_line { 'icmp_redirects_all_secure':
     ensure => 'present',
     path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'net.ipv4.conf.all.secure_redirects = 0',
+    line   => 'net.ipv34.conf.all.secure_redirects = 0',
     notify => Exec['restart_sysctl'],
   }
 
-  file_line { 'icmp_redirects_default_secure':
-    ensure => 'present',
-    path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'net.ipv4.conf.default.secure_redirects = 0',
-    notify => Exec['restart_sysctl'],
-  }
-
-  # Ensure suspicious packets are logged - Section 3.2.4
-  file_line { 'log_suspicious_all':
-    ensure => 'present',
-    path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'net.ipv4.conf.all.log_martians = 1',
-    notify => Exec['restart_sysctl'],
-  }
-
-  file_line { 'log_suspicious_default':
-    ensure => 'present',
-    path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'net.ipv4.conf.default.log_martians = 1',
-    notify => Exec['restart_sysctl'],
-  }
-
-  #
 }
