@@ -65,10 +65,6 @@ file_line { 'vfat_disable':
   line   => 'install vfat /bin/true',
 }
 
-# Ensure separate partition exists for /tmp - Section 1.1.2
-#
-# NOTE: The default installation for RHEL7 uses tmpfs which resides in virutal memory and
-# is cleared on each reboot, satisfying the needs of this control
 
 
 

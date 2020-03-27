@@ -44,32 +44,5 @@ file_line { 'hfsplus_disable':
   line   => 'install hfsplus /bin/true',
 }
 
-# Ensure mounting of squashfs filesystems is disabled - Section 1.1.1.6
-file_line { 'squashfs_disable':
-  ensure => 'present',
-  path   => '/etc/modprobe.d/CIS.conf',
-  line   => 'install squashfs /bin/true',
-}
-
-# Ensure mounting of udf filesystem is disabled - Section 1.1.1.7
-file_line { 'udf_disable':
-  ensure => 'present',
-  path   => '/etc/modprobe.d/CIS.conf',
-  line   => 'install udf /bin/true',
-}
-
-# Ensure mounting of FAT filesystems (vfat) is disabled - Section 1.1.1.8
-file_line { 'vfat_disable':
-  ensure => 'present',
-  path   => '/etc/modprobe.d/CIS.conf',
-  line   => 'install vfat /bin/true',
-}
-
-# Ensure separate partition exists for /tmp - Section 1.1.2
-#
-# NOTE: The default installation for RHEL7 uses tmpfs which resides in virutal memory and
-# is cleared on each reboot, satisfying the needs of this control
-
-
 
 }
