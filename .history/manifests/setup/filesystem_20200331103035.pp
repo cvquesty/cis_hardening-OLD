@@ -70,6 +70,7 @@ file_line { 'vfat_disable':
 # Ensure nosuid option set on /tmp partition - Section 1.1.4
 # Ensure noexec option set on /tmp partition - Section 1.1.5
 
+
 # Section 1.1.2
 exec { 'checktmp_part':
   path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
@@ -77,36 +78,6 @@ exec { 'checktmp_part':
   onlyif  => 'test ! "mount | grep ^/tmp" ',
 }
 
-# Section 1.1.3
-exec { 'chktmp_nodev':
-  path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-  command => 'logger -p creit "Filesystem /tmp is not set nodev!"',
-  onlyif  => 'test ! mount |grep ^/tmp |grep nodev',
-}
-
-# Section 1.1.4
-exec { 'chktmp_nosuid':
-  path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-  command => 'logger -p crit "Filesystem /tmp is not set nosuid"',
-  onlyif  => 'test ! mount |grep ^/tmp |grep nosuid',
-}
-
-# Section 1.1.5
-exec { 'chktmp_noexec':
-  path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-  command => 'logger -p crit "Filesystem /tmp is not set noexec"',
-  onlyif  => 'test ! mount |grep ^/tmp |grep noexec',
-}
-
-# Ensure separate partition exists fpr /var - Section 1.1.6
-
-exec { 'chkvar_part':
-  ‭path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-  command => 'logger -p crit "Filesystem /var is not on its own partition"',
-  onlyif  => 'test ! mount |grep ^/var','
-}
-
-# Ensure separate partition exists for /var/tmp - Section 1.1.7
 
 
 }

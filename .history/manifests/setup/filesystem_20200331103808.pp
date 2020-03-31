@@ -88,25 +88,13 @@ exec { 'chktmp_nodev':
 exec { 'chktmp_nosuid':
   path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
   command => 'logger -p crit "Filesystem /tmp is not set nosuid"',
-  onlyif  => 'test ! mount |grep ^/tmp |grep nosuid',
+  onlyif  => 'test ! mount |grep ^tmp |grep nosuid',
 }
 
 # Section 1.1.5
 exec { 'chktmp_noexec':
   path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
   command => 'logger -p crit "Filesystem /tmp is not set noexec"',
-  onlyif  => 'test ! mount |grep ^/tmp |grep noexec',
 }
-
-# Ensure separate partition exists fpr /var - Section 1.1.6
-
-exec { 'chkvar_part':
-  ‭path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-  command => 'logger -p crit "Filesystem /var is not on its own partition"',
-  onlyif  => 'test ! mount |grep ^/var','
-}
-
-# Ensure separate partition exists for /var/tmp - Section 1.1.7
-
 
 }
