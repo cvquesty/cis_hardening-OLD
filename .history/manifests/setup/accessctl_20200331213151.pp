@@ -3,8 +3,8 @@
 # Section 1.5 - Additional Process Hardening
 #
 # @example
-#   include cis_hardening::setup::prochardening
-class cis_hardening::setup::prochardening {
+#   include cis_hardening::setup::accessctl
+class cis_hardening::setup::accessctl {
 
   # Ensure Core Dumps are restricted - Section 1.5.1
   file_line { 'core_limits':
@@ -36,4 +36,5 @@ class cis_hardening::setup::prochardening {
   package { 'prelink':
     ensure => 'absent',
   }
+
 }

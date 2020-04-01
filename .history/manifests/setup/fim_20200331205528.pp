@@ -29,8 +29,7 @@ class cis_hardening::setup::fim {
   cron { 'aide':
     command => '/usr/sbin/aide --check',
     user    => 'root',
-    hour    => 5,
-    minute  => 0,
+    hour    => [5],
   }
 
 }

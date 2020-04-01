@@ -116,88 +116,21 @@ class cis_hardening::setup::filesystem {
   exec { 'chkvartmp_nodev':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => 'logger -p crit "Partition /var/tmp does not have the nodev option set"',
-    onlyif  => 'test ! mount |grep /var/tmp |grep nodev',
+    unless  => 'test ! mount |grep /var/tmp |grep nodev',
   }
 
   # Ensure nosuid set on /var/tmp partition - 1.1.9
   exec { 'chkvartmp_nosuid':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => 'logger -p crit "Partition /var/tmp does not have the nosuid option set"',
-    onlyif  => 'test ! mount |grep /var/tmp |grep nosuid',
+    unless  => 'test ! mount |grep /var/tmp |grep nosuid',
   }
 
   # Ensure noexec option set on /var/tmp partition - Section 1.1.10
   exec { 'chkvartmp_noexec':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => 'logger -p crit "Partition /var/tmp does not have the noexec option set"',
-    onlyif  => 'test ! mount |grep /var/tmp |grep noexec',
-  }
-
-  # Ensure separate partition exists for /var/log - Section 1.1.11
-  exec { 'chkvarlog_part':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'logger -p crit "Partition /var/log is not on its own parition."',
-    onlyif  => 'test ! mount |grep /var/log',
-  }
-
-  # Ensure separate parition exists for /var/log/audit - Section 1.1.12
-  exec { 'chkvarlogtmp_part':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'logger -p crit "Partition /var/log/audit is not on its own partition"',
-    onlyif  => 'test ! mount |grep /var/log/audit',
-  }
-
-  # Ensure separate parittion exists for /home - Section 1.1.13
-  exec { 'chkhome_part':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'logger -p crit "Parition /home is not on its own parition."',
-    onlyif  => 'test ! mount |grep /home',
-  }
-
-  # Ensure nodev option is set on /home partition - Section 1.1.14
-  exec { 'chkhome_nodev':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'logger -p crit "Partition /home does not have the nodev option set"',
-    onlyif  => 'test ! mount |grep /home |grep nodev',
-  }
-
-  # Ensure nodev option set on /dev/shm parition - Section 1.1.15
-  exec { 'chkdevshm_nodev':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'logger -p crit "Parition /dev/shm does not have the nodev option set."',
-    onlyif  => 'test ! mount |grep /dev/shm |grep nodev',
-  }
-
-  # Ensure nosuid option set on /dev/shm parition - Section 1.1.16
-  exec { 'chkdevshm_nosuid':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'logger -p crit "Partition /dev/shm does not have the nosuid option set."',
-    onlyif  => 'test ! mount |grep /dev/shm |grep nosuid',
-  }
-
-  # Ensure noexec option set on /dev/shm parition - Section 1.1.17
-  exec { 'chkdevshm_noexec':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'logger -p crit "Partition /dev/shm does not have the noexec option set."',
-    onlyif  => 'test ! mount |grep /dev/shm |grep noexec',
-  }
-
-  # Ensure nodev option set on removable media partitions - Section 1.1.18
-  # Ensure nosuid option set on removable media partitions - Section 1.1.19
-  # Ensure noexec option set on removable media paritions - Section 1.1.20
-  #
-  # NOTE: These steps require manual inspection and action based on observations
-
-  # Ensure sticky bit is set on all world-writable directories - Section 1.1.21
-  #
-  # NOTE: This step requires manual inspection and action based on observations
-
-  # Disable Automounting - Section 1.1.22
-  service { 'autofs':
-    ensure     => 'stopped',
-    enable     => false,
-    hasstatus  => true,
-    hasrestart => true,
+    unless  => 'test ! mount |grep /var/tmp |grep noexec',
   }
 
 }

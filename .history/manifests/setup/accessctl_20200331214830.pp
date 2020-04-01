@@ -21,7 +21,7 @@ class cis_hardening::setup::accessctl {
     line   => 'GRUB_CMDLINE_LINUX=""',
     match  => '^GRUB_CMDLINE_LINUX\=',
   }
-
+  
   # Ensure the SELinux state is "enforcing" - Section 1.6.1.2
   file_line { 'selinux_state':
     ensure => 'present',
@@ -36,27 +36,6 @@ class cis_hardening::setup::accessctl {
     path   => '/etv/selinux/config',
     line   => 'SELINUXTYPE=targeted',
     match  => '^SELINUXTYPE\=',
-  }
-
-  # Ensure SETroubleshoot is not installed - Section 1.6.1.4
-  package { 'setroubleshoot':
-    ensure => 'absent',
-  }
-
-  # Ensure MCS Translation Service is not installed - Section 1.6.1.5
-  package { 'mcstrans':
-    ensure => 'absent',
-  }
-
-  # Ensure no unconfined daemons exist - Section 1.6.1.6
-  #
-  # NOTE: This is a manual inspection item. Check for unconfined daemons with:
-  #
-  # ps -eZ | egrep "initrc" | egrem -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'
-
-  # Ensure SELinux is installed - Section 1.6.2
-  package { 'libselinux':
-    ensure => 'present',
   }
 
 }

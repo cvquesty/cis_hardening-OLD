@@ -175,29 +175,6 @@ class cis_hardening::setup::filesystem {
     onlyif  => 'test ! mount |grep /dev/shm |grep nosuid',
   }
 
-  # Ensure noexec option set on /dev/shm parition - Section 1.1.17
-  exec { 'chkdevshm_noexec':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => 'logger -p crit "Partition /dev/shm does not have the noexec option set."',
-    onlyif  => 'test ! mount |grep /dev/shm |grep noexec',
-  }
-
-  # Ensure nodev option set on removable media partitions - Section 1.1.18
-  # Ensure nosuid option set on removable media partitions - Section 1.1.19
-  # Ensure noexec option set on removable media paritions - Section 1.1.20
-  #
-  # NOTE: These steps require manual inspection and action based on observations
-
-  # Ensure sticky bit is set on all world-writable directories - Section 1.1.21
-  #
-  # NOTE: This step requires manual inspection and action based on observations
-
-  # Disable Automounting - Section 1.1.22
-  service { 'autofs':
-    ensure     => 'stopped',
-    enable     => false,
-    hasstatus  => true,
-    hasrestart => true,
-  }
+  
 
 }

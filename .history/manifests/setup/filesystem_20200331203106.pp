@@ -188,16 +188,4 @@ class cis_hardening::setup::filesystem {
   #
   # NOTE: These steps require manual inspection and action based on observations
 
-  # Ensure sticky bit is set on all world-writable directories - Section 1.1.21
-  #
-  # NOTE: This step requires manual inspection and action based on observations
-
-  # Disable Automounting - Section 1.1.22
-  service { 'autofs':
-    ensure     => 'stopped',
-    enable     => false,
-    hasstatus  => true,
-    hasrestart => true,
-  }
-
 }

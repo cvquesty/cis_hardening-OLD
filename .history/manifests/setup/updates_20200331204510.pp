@@ -1,6 +1,6 @@
-# @summary A manifest to manage filesystems according to the CIS hardening Guidelines
+# @summary A short summary of the purpose of this class
 #
-# Section 1.2
+# A description of what this class does
 #
 # @example
 #   include cis_hardening::setup::updates

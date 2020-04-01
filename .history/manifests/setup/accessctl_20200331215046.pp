@@ -48,15 +48,4 @@ class cis_hardening::setup::accessctl {
     ensure => 'absent',
   }
 
-  # Ensure no unconfined daemons exist - Section 1.6.1.6
-  #
-  # NOTE: This is a manual inspection item. Check for unconfined daemons with:
-  #
-  # ps -eZ | egrep "initrc" | egrem -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'
-
-  # Ensure SELinux is installed - Section 1.6.2
-  package { 'libselinux':
-    ensure => 'present',
-  }
-
 }

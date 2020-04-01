@@ -183,21 +183,7 @@ class cis_hardening::setup::filesystem {
   }
 
   # Ensure nodev option set on removable media partitions - Section 1.1.18
-  # Ensure nosuid option set on removable media partitions - Section 1.1.19
-  # Ensure noexec option set on removable media paritions - Section 1.1.20
   #
   # NOTE: These steps require manual inspection and action based on observations
-
-  # Ensure sticky bit is set on all world-writable directories - Section 1.1.21
-  #
-  # NOTE: This step requires manual inspection and action based on observations
-
-  # Disable Automounting - Section 1.1.22
-  service { 'autofs':
-    ensure     => 'stopped',
-    enable     => false,
-    hasstatus  => true,
-    hasrestart => true,
-  }
 
 }
