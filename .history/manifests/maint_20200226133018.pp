@@ -8,8 +8,4 @@
 # 
 #
 class cis_hardening::maint {
-
-  include cis_hardening::maint::fileperms
-  include cis_hardening::maint::usergroups
-  
 }
