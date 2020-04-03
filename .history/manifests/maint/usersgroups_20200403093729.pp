@@ -20,14 +20,6 @@ class cis_hardening::maint::usersgroups {
   # passwd -l <username> 
   #
 
-  # Items 6.2.2 through 6.2.19 are widely variant from site to site, and specific guidance needs to 
-  # be given in regards to userspace pathing and ownerships within home directories.
-  #
-  # 1. Items will change if in IAM
-  # 2. Items will change if pam_mkhomedir is used
-  # 3. Users may or may not be administrative in nature
-  # 4. Users may be service accounts.
-  #
-  # Ensure that site guidelines are explicitly spelled out, and determine the correct approach.
+  
 
 }

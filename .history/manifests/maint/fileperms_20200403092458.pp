@@ -103,32 +103,8 @@ class cis_hardening::maint::fileperms {
   # Run: "sudo df -l -P |awk {'if (NR!=1) print $6'} |xargs -I '{}' find '{}' -xdev -ngroup"
   # and verify no files are returned. If you would instead perfer to search individual partitions,
   # use the following command:
-  #
-  #   find <partition> -xdev -nogroup
-  #
-  # on each partition.
-
-  # Audit SUID executables - Section 6.1.13
-  #
-  # NOTE: This command is a manual command with manual inspection and remedation of the output.
-  #
-  # Run: "sudo df --local -P |awk {'if (NR!=1) print $6'} |xargs -I '{}' find '{}' -xdev -type f -perm -4000"
-  # and verify no files are returned. If you would instead prefer to search individual paritions, use the 
-  # following command:
-  #
-  # find <partition> -xdev -type f -perm 4000
+  #   fnd <partition> -xdev -nogroup
   #
   # on each partition.
 
-  # Audit SGID executables - Section 6.1.14
-  #
-  # NOTE: This command is a manual command with manual inspection and remedation of the output.
-  #
-  # Run: "sudo df --local -P |awk {'if (NR!=1) print $6'} |xargs -I '{}' find '{}' -xdev -type f -perm -2000"
-  # and verify no files are returned. If you would instead prefer to search individual paritions, use the 
-  # following command:
-  #
-  # find <partition> -xdev -type f -perm 2000
-  #
-  # on each partition.
 }
