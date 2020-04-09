@@ -3,7 +3,7 @@
 # Section 6.2
 #
 # @example
-#   include cis_hardening::maint::usergroups
+#   include cis_hardening::maint::usersgroups
 class cis_hardening::maint::usergroups {
 
   # Ensure password fields are not empty - Section 6.2.1
