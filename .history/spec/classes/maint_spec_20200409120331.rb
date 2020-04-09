@@ -8,7 +8,7 @@ describe 'cis_hardening::maint' do
       # Check for default class
       it { is_expected.to contain_class('cis_hardening::maint')}
 
-      # Check for all includes in the maint.pp
+      # Check for all includes in the logaudit.pp
       it { is_expected.to contain_class('cis_hardening::maint::fileperms')}
       it { is_expected.to contain_class('cis_hardening::maint::usergroups')}
 
