@@ -46,7 +46,7 @@ class cis_hardening::auth::accounts {
   # Ensure default group for the root account is GID 0 - Section 5.4.3
   user { 'root':
     ensure => 'present',
-    gid    => 'root',
+    group  => 'root',
   }
 
   # Ensure default user umask is 027 or more restrictive - Section 5.4.4
