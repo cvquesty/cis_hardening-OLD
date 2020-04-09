@@ -6,12 +6,6 @@
 #   include cis_hardening::setup::prochardening
 class cis_hardening::setup::prochardening {
 
-  # Restart sysctl for prochardening items
-  exec { 'restart_prochardening_sysctl':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => '/sbin/sysctl -p',
-  }
-
   # Ensure Core Dumps are restricted - Section 1.5.1
   file_line { 'core_limits':
     ensure => 'present',
@@ -23,7 +17,7 @@ class cis_hardening::setup::prochardening {
     ensure  => 'present',
     path    => '/etc/sysctl.d/99-sysctl.conf',
     line    => 'fs.suid_dumpable = 0',
-    notify  => Exec['restart_prochardening_sysctl'],
+    notify  => Exec['restart_sysctl'],
     require => Class['cis_hardening::network::netparams'],
   }
 
@@ -33,10 +27,11 @@ class cis_hardening::setup::prochardening {
 
   # Ensure Address space layout randomization - Section 1.5.3
   file_line { 'randomize_va_space':
-    ensure => 'present',
-    path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'kernel.randomize_va_space = 2',
-    notify => Exec['restart_prochardening_sysctl'],
+    ensure  => 'present',
+    path    => '/etc/sysctl.d/99-sysctl.conf',
+    line    => 'kernel.randomize_va_space = 2',
+    notify  => Exec['restart_sysctl'],
+    require => Class['cis_hardening::network::netparams'],
   }
 
   # Ensure prelink is disabled - Section 1.5.3

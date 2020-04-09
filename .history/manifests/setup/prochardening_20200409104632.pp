@@ -6,12 +6,6 @@
 #   include cis_hardening::setup::prochardening
 class cis_hardening::setup::prochardening {
 
-  # Restart sysctl for prochardening items
-  exec { 'restart_prochardening_sysctl':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => '/sbin/sysctl -p',
-  }
-
   # Ensure Core Dumps are restricted - Section 1.5.1
   file_line { 'core_limits':
     ensure => 'present',
@@ -20,11 +14,9 @@ class cis_hardening::setup::prochardening {
   }
 
   file_line { 'fs_dumpable':
-    ensure  => 'present',
-    path    => '/etc/sysctl.d/99-sysctl.conf',
-    line    => 'fs.suid_dumpable = 0',
-    notify  => Exec['restart_prochardening_sysctl'],
-    require => Class['cis_hardening::network::netparams'],
+    ensure => 'present',
+    path   => '/etc/sysctl.d/99-sysctl.conf',
+    line   => 'fs.suid_dumpable = 0',
   }
 
   # Ensure XD/NX support is enabled - Section 1.5.2
@@ -36,7 +28,6 @@ class cis_hardening::setup::prochardening {
     ensure => 'present',
     path   => '/etc/sysctl.d/99-sysctl.conf',
     line   => 'kernel.randomize_va_space = 2',
-    notify => Exec['restart_prochardening_sysctl'],
   }
 
   # Ensure prelink is disabled - Section 1.5.3

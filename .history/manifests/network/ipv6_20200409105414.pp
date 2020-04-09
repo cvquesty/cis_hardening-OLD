@@ -6,12 +6,6 @@
 #   include cis_hardening::network::ipv6
 class cis_hardening::network::ipv6 {
 
-  # Restart sysctl for IPv6
-  exec { 'restart_ipv6_sysctl':
-    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => '/sbin/sysctl -p',
-  }
-
   # Ensure IPv6 router advertisements are not accepted - Section 3.3.1
   file_line { 'ipv6_accept_ra_all':
     ensure => 'present',

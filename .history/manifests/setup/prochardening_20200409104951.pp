@@ -37,6 +37,7 @@ class cis_hardening::setup::prochardening {
     path   => '/etc/sysctl.d/99-sysctl.conf',
     line   => 'kernel.randomize_va_space = 2',
     notify => Exec['restart_prochardening_sysctl'],
+    
   }
 
   # Ensure prelink is disabled - Section 1.5.3

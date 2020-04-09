@@ -33,10 +33,11 @@ class cis_hardening::setup::prochardening {
 
   # Ensure Address space layout randomization - Section 1.5.3
   file_line { 'randomize_va_space':
-    ensure => 'present',
-    path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'kernel.randomize_va_space = 2',
-    notify => Exec['restart_prochardening_sysctl'],
+    ensure  => 'present',
+    path    => '/etc/sysctl.d/99-sysctl.conf',
+    line    => 'kernel.randomize_va_space = 2',
+    notify  => Exec['restart_prochardening_sysctl'],
+    
   }
 
   # Ensure prelink is disabled - Section 1.5.3
