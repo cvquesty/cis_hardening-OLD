@@ -77,20 +77,6 @@ describe 'cis_hardening::auth::cron' do
         'onlyif'  => 'test -f /etc/cron.deny',
       )}
 
-      it { is_expected.to contain_file('/etc/cron.allow').with(
-        'ensure' => 'file',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0600',
-      )}
-
-      it { is_expected.to contain_file('/etc/at.allow').with(
-        'ensure' => 'file',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0600',
-      )}
-
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end

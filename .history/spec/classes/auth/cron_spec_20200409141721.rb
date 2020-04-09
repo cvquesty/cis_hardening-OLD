@@ -84,7 +84,7 @@ describe 'cis_hardening::auth::cron' do
         'mode'   => '0600',
       )}
 
-      it { is_expected.to contain_file('/etc/at.allow').with(
+      it { is_expected.to contain_file('/etc/cron.deny').with(
         'ensure' => 'file',
         'owner'  => 'root',
         'group'  => 'root',
