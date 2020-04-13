@@ -102,15 +102,6 @@ describe 'cis_hardening::auth::ssh' do
         'command' => "perl -pi -e 's/^#LoginGraceTime.*$/LoginGraceTime 60/' /etc/ssh/sshd_config",
         'onlyif'  => 'test ! "grep ^LoginGraceTime /etc/ssh/sshd_config"',
       )}
-
-      # Ensure SSH Access is Limited - Section 5.2.14
-      # Unused in sshd_config. Managed via IAM
-      # Ensure SSH Warning Banner is Configured
-      it { is_expected.to contain_exec('set_ssh_banner').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => "perl -pi -e 's/^#Banner.*$/Banner /etc/issue.net/' /etc/ssh/sshd_config",
-        'onlyif'  => 'test ! "grep ^Banner /etc/ssh/sshd_config"',
-      )}
         
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }

@@ -95,22 +95,6 @@ describe 'cis_hardening::auth::ssh' do
         'command' => "perl -pi -e 's/^#ClientAliveCountMax.*$/ClientAliveCountMax 0/' /etc/ssh/sshd_config",
         'onlyif'  => 'test ! "grep ^ClientAliveCountMax /etc/ssh/sshd_config"',
       )}
-
-      # Ensure that Ensure SSH LoginGraceTime is set to One Minute or Less - Section 5.2.13
-      it { is_expected.to contain_exec('login_grace_time').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => "perl -pi -e 's/^#LoginGraceTime.*$/LoginGraceTime 60/' /etc/ssh/sshd_config",
-        'onlyif'  => 'test ! "grep ^LoginGraceTime /etc/ssh/sshd_config"',
-      )}
-
-      # Ensure SSH Access is Limited - Section 5.2.14
-      # Unused in sshd_config. Managed via IAM
-      # Ensure SSH Warning Banner is Configured
-      it { is_expected.to contain_exec('set_ssh_banner').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => "perl -pi -e 's/^#Banner.*$/Banner /etc/issue.net/' /etc/ssh/sshd_config",
-        'onlyif'  => 'test ! "grep ^Banner /etc/ssh/sshd_config"',
-      )}
         
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
