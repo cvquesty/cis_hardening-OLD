@@ -50,12 +50,6 @@ describe 'cis_hardening::auth::pam' do
         'unless'  => 'grep sha512 /etc/pam.d/system-auth-ac',
       )}
 
-      it { is_expected.to contain_exec('set_pw_hashing_algo_passauthac').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => "perl -pi -e 's/$/ sha512/ if /^password\s+sufficient\s+pam_unix.so/' /etc/pam.d/password-auth-ac",
-        'unless'  => 'grep sha512 /etc/pam.d/password-auth-ac',
-      )}
-
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end
