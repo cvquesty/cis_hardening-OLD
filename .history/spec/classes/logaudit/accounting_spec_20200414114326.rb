@@ -291,11 +291,6 @@ describe 'cis_hardening::logaudit::accounting' do
         'line'   => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
       )}
 
-      it { is_expected.to contain_exec('make_auditd_immutable').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbn',
-        'command' => "perl -0777 -pi -e 's/$/ -e 2/' /etc/audit/audit.rules",
-      )}
-
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end

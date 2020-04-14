@@ -246,56 +246,6 @@ describe 'cis_hardening::logaudit::accounting' do
         'line'   => '-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
       )}
 
-      # Ensure that Ensure changes to system administration scope (sudoers) is collected - Section 4.1.15
-      it { is_expected.to contain_file_line('sudoers_file').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /etc/sudoers -p wa -k scope',
-      )}
-
-      it { is_expected.to contain_file_line('sudoers_dir').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /etc/sudoers.d/ -p wa -k scope',
-      )}
-
-      # Ensure that Ensure system administrator actions (sudolog) are collected - Section 4.1.16
-      it { is_expected.to contain_file_line('sudolog').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /var/log/sudo.log -p wa -k actions',
-      )}
-
-      # Ensure that Ensure Kernel module loading and unloading are collected - Section 4.1.17
-      it { is_expected.to contain_file_line('check_insmod').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /sbin/insmod -p x -k modules',
-      )}
-
-      it { is_expected.to contain_file_line('check_rmmod').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /sbin/rmmod -p x -k modules',
-      )}
-
-      it { is_expected.to contain_file_line('check_modprobe').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /sbin/modprobe -p x -k modules',
-      )}
-
-      it { is_expected.to contain_file_line('check_modulestate').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
-      )}
-
-      it { is_expected.to contain_exec('make_auditd_immutable').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbn',
-        'command' => "perl -0777 -pi -e 's/$/ -e 2/' /etc/audit/audit.rules",
-      )}
-
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end
