@@ -39,21 +39,6 @@ describe 'cis_hardening::setup::accessctl' do
         'match'  => '^SELINUXTYPE\=',
       )}
 
-      # Ensure SETroubleshoot is not installed - Section 1.6.1.4
-      it { is_expected.to contain_package('setroubleshoot').with(
-        'ensure' => 'absent',
-      )}
-
-      # Ensure MCS Translation Service is not installed - Section 1.6.1.5
-      it { is_expected.to contain_package('mcstrans').with(
-        'ensure' => 'absent',
-      )}
-
-      # Ensure SELinux is installed - Section 1.6.2
-      it { is_expected.to contain_package('libselinux').with(
-        'ensure' => 'present',
-      )}
-
       # Ensure it compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end
