@@ -61,64 +61,11 @@ describe 'cis_hardening::network::netparams' do
       ).that_notifies('Exec[restart_sysctl]')}
 
       # Ensure secure ICMP redirects are not accepted - Section 3.2.3
-      it { is_expected.to contain_file_line('icmp_redirects_all_secure').with(
+      it { is_expected.tp contain_file_line('icmp_redirects_all_secure').with(
         'ensure' => 'present',
         'path'   => '/etc/sysctl.d/99-sysctl.conf',
         'line'   => 'net.ipv4.conf.all.secure_redirects = 0',
-      ).that_notifies('Exec[restart_sysctl]')}
-
-      it { is_expected.to contain_file_line('icmp_redirects_default_secure').with(
-        'ensure' => 'present',
-        'path'   => '/etc/sysctl.d/99-sysctl.conf',
-        'line'   => 'net.ipv4.conf.default.secure_redirects = 0',
-      ).that_notifies('Exec[restart_sysctl]')}
-
-      # Ensure suspicious packets are logged - Section 3.2.4
-      it { is_expected.to contain_file_line('log_suspicious_all').with(
-        'ensure' => 'present',
-        'path'   => '/etc/sysctl.d/99-sysctl.conf',
-        'line'   => 'net.ipv4.conf.all.log_martians = 1',
-      ).that_notifies('Exec[restart_sysctl]')}
-
-      it { is_expected.to contain_file_line('log_suspicious_default').with(
-        'ensure' => 'present',
-        'path'   => '/etc/sysctl.d/99-sysctl.conf',
-        'line'   => 'net.ipv4.conf.default.log_martians = 1',
-      ).that_notifies('Exec[restart_sysctl]')}
-
-      # Ensure broadcast ICMP requests are ignored - Section 3.2.5
-      it { is_expected.to contain_file_line('ignore_broadcasts').with(
-        'ensure' => 'present',
-        'path'   => '/etc/sysctl.d/99-sysctl.conf',
-        'line'   => 'net.ipv4.icmp_echo_ignore_broadcast = 1',
-      ).that_notifies('Exec[restart_sysctl]')}
-
-      # Ensure bogus ICMP responses are ignored - Section 3.2.6
-      it { is_expected.to contain_file_line('ignore_bogus_icmp_errors').with(
-        'ensure' => 'present',
-        'path'   => '/etc/sysctl.d/99-sysctl.conf',
-        'line'   => 'net.ipv4.icmp_ignore_bogus_error_responses = 1',
-      ).that_notifies('Exec[restart_sysctl]')}
-
-      # Ensure reverse path filtering is enabled - Section 3.2.7
-      it { is_expected.to contain_file_line('reverse_path_filter_all').with(
-        'ensure' => 'present',
-        'path'   => '/etc/sysctl.d/99-sysctl.conf',
-        'line'   => 'net.ipv4.conf.all.rp_filter = 1',
-      ).that_notifies('Exec[restart_sysctl]')}
-
-      it { is_expected.to contain_file_line('reverse_path_filter_default').with(
-        'ensure' => 'present',
-        'path'   => '/etc/sysctl.d/99-sysctl.conf',
-        'line'   => 'net.ipv4.conf.default.rp_filter = 1',
-      ).that_notifies('Exec[restart_sysctl]')}
-
-      # Ensure TCP SYN Cookies is enabled - Section 3.2.8
-      it { is_expected.to contain_file_line('tcp_syncookies').with(
-        'ensure' => 'present',
-        'path'   => '/etc/sysctl.d/99-sysctl.conf',
-        'line'   => 'net.ipv4.tcp_syncookies = 1',
-      ).that_notifies('Exec[restart_sysctl]')}
+      )}
 
       # Ensure it compiles with all dependencies
       it { is_expected.to compile.with_all_deps }

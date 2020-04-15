@@ -61,7 +61,7 @@ describe 'cis_hardening::network::netparams' do
       ).that_notifies('Exec[restart_sysctl]')}
 
       # Ensure secure ICMP redirects are not accepted - Section 3.2.3
-      it { is_expected.to contain_file_line('icmp_redirects_all_secure').with(
+      it { is_expected.tp contain_file_line('icmp_redirects_all_secure').with(
         'ensure' => 'present',
         'path'   => '/etc/sysctl.d/99-sysctl.conf',
         'line'   => 'net.ipv4.conf.all.secure_redirects = 0',
