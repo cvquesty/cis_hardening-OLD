@@ -81,7 +81,8 @@ describe 'cis_hardening::setup::banners' do
         'command' => 'dconf update',
       )}
 
-      # Ensure it compiles with all dependencies
+
+      # Ensure it compikles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end
   end

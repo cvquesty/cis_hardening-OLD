@@ -45,43 +45,8 @@ describe 'cis_hardening::setup::banners' do
         'line'   => 'user-db:user',
       )}
 
-      it { is_expected.to contain_file_line('gdm_systemdb').with(
-        'ensure' => 'present',
-        'path'   => '/etc/dconf/profile/gdm',
-        'line'   => 'system-db:gdm',
-      )}
 
-      it { is_expected.to contain_file_line('gdm_filedb').with(
-        'ensure' => 'present',
-        'path'   => '/etc/dconf/profile/gdm',
-        'line'   => 'file-db:/usr/share/gdm/greeter-dconf-defaults',
-      )}
-
-      it { is_expected.to contain_file_line('gdm_banner_loginscreenenable').with(
-        'ensure' => 'present',
-        'path'   => '/etc/dconf/db/gdm.d/01-banner-message',
-        'line'   => '[org/gnome/login-screen]',
-      ).that_notifies('Exec[refresh_dconf]')}
-
-      it { is_expected.to contain_file_line('gdm_banner_message_enable').with(
-        'ensure' => 'present',
-        'path'   => '/etc/dconf/db/gdm.d/01-banner-message',
-        'line'   => 'banner-message-enable=true',
-      ).that_notifies('Exec[refresh_dconf]')}
-
-      it { is_expected.to contain_file_line('gdm_banner_message_text').with(
-        'ensure' => 'present',
-        'path'   => '/etc/dconf/db/gdm.d/01-banner-message',
-        'line'   => "banner-message-text='<banner message>'",
-      ).that_notifies('Exec[refresh_dconf]')}
-
-      # Ensure that Refresh dconf exists
-      it { is_expected.to contain_exec('refresh_dconf').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => 'dconf update',
-      )}
-
-      # Ensure it compiles with all dependencies
+      # Ensure it compikles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end
   end
