@@ -23,7 +23,6 @@ class cis_hardening::setup::fim {
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => 'mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz',
     onlyif  => 'test -f /var/lib/aide/aide.db.new.gz',
-    unless  => 'test -f /var/lib/aide/aide.db.gz',
     require => Exec['aideinit'],
   }
 

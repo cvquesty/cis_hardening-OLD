@@ -181,14 +181,6 @@ describe 'cis_hardening::setup::filesystem' do
         'onlyif'  => 'test ! mount |grep /dev/shm |grep noexec',
       )}
 
-      # Disable Automounting - Section 1.1.22
-      it { is_expected.to contain_service('autofs').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end

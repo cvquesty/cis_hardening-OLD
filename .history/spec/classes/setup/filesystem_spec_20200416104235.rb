@@ -146,49 +146,6 @@ describe 'cis_hardening::setup::filesystem' do
         'onlyif'  => 'test ! mount |grep /var/log/audit',
       )}
 
-      # Ensure separate parittion exists for /home - Section 1.1.13
-      it { is_expected.to contain_exec('chkhome_part').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => 'logger -p crit "Parition /home is not on its own parition."',
-        'onlyif'  => 'test ! mount |grep /home',
-      )}
-
-      # Ensure nodev option is set on /home partition - Section 1.1.14
-      it { is_expected.to contain_exec('chkhome_nodev').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => 'logger -p crit "Partition /home does not have the nodev option set"',
-        'onlyif'  => 'test ! mount |grep /home |grep nodev',
-      )}
-
-      # Ensure nodev option set on /dev/shm parition - Section 1.1.15
-      it { is_expected.to contain_exec('chkdevshm_nodev').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => 'logger -p crit "Parition /dev/shm does not have the nodev option set."',
-        'onlyif'  => 'test ! mount |grep /dev/shm |grep nodev',
-      )}
-
-      # Ensure nosuid option set on /dev/shm parition - Section 1.1.16
-      it { is_expected.to contain_exec('chkdevshm_nosuid').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => 'logger -p crit "Partition /dev/shm does not have the nosuid option set."',
-        'onlyif'  => 'test ! mount |grep /dev/shm |grep nosuid',
-      )}
-
-      # Ensure noexec option set on /dev/shm parition - Section 1.1.17
-      it { is_expected.to contain_exec('chkdevshm_noexec').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-        'command' => 'logger -p crit "Partition /dev/shm does not have the noexec option set."',
-        'onlyif'  => 'test ! mount |grep /dev/shm |grep noexec',
-      )}
-
-      # Disable Automounting - Section 1.1.22
-      it { is_expected.to contain_service('autofs').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end
