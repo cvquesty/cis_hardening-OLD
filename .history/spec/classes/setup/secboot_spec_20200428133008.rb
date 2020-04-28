@@ -9,7 +9,7 @@ describe 'cis_hardening::setup::secboot' do
       it { is_expected.to contain_class('cis_hardening::setup::secboot')}
 
       # Ensure permissions on bootloader config are configured - Section 1.4.1
-      it { is_expected.to contain_file('/boot/grub2/grub.cfg').with(
+      it { is_expected.to contain_file(/boot/grub2/grub.cfg).with(
         'ensure' => 'present',
         'owner'  => 'root',
         'group'  => 'root',
