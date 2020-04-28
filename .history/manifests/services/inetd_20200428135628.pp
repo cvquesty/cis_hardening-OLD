@@ -38,7 +38,7 @@ class cis_hardening::services::inetd {
 
   # Ensure discard services are not enabled - Section 2.1.3
   service { 'discard-dgram':
-    ensure     => 'stopped',
+    ensure => 'stopped',
     enable     => false,
     hasstatus  => true,
     hasrestart => true,
@@ -75,22 +75,6 @@ class cis_hardening::services::inetd {
   }
 
   service { 'time-stream':
-    ensure     => 'stopped',
-    enable     => false,
-    hasstatus  => true,
-    hasrestart => true,
-  }
-
-  # Ensure tftp server is not enabled - Section 2.1.6
-  service { 'tftp':
-    ensure     => 'stopped',
-    enable     => false,
-    hasstatus  => true,
-    hasrestart => true,
-  }
-
-  # Ensure xinetd is not enabled - Section 2.1.7
-  service { 'xinetd':
     ensure     => 'stopped',
     enable     => false,
     hasstatus  => true,

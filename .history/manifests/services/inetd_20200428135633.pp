@@ -81,21 +81,5 @@ class cis_hardening::services::inetd {
     hasrestart => true,
   }
 
-  # Ensure tftp server is not enabled - Section 2.1.6
-  service { 'tftp':
-    ensure     => 'stopped',
-    enable     => false,
-    hasstatus  => true,
-    hasrestart => true,
-  }
-
-  # Ensure xinetd is not enabled - Section 2.1.7
-  service { 'xinetd':
-    ensure     => 'stopped',
-    enable     => false,
-    hasstatus  => true,
-    hasrestart => true,
-  }
-
 
 }

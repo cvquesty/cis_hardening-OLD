@@ -39,7 +39,7 @@ describe 'cis_hardening::services::inetd' do
       )}
 
       # Ensure discard services are not enabled - Section 2.1.3
-      it { is_expected.to contain_service('discard-dgram').with(
+      t { is_expected.to contain_service('discard-dgram').with(
         'ensure'     => 'stopped',
         'enable'     => false,
         'hasstatus'  => true,
@@ -47,52 +47,6 @@ describe 'cis_hardening::services::inetd' do
       )}
 
       it { is_expected.to contain_service('discard-stream').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
-      # Ensure echo services are not enabled - Section 2.1.4
-      it { is_expected.to contain_service('echo-dgram').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-        
-      it { is_expected.to contain_service('echo-stream').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
-      # Ensure time services are not enabled - Section 2.1.5
-      it { is_expected.to contain_service('time-dgram').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-        
-      it { is_expected.to contain_service('time-stream').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
-      # Ensure tftp server is not enabled - Section 2.1.6
-      it { is_expected.to contain_service('tftp').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
-      # Ensure xinetd server is not enabled - Section 2.1.7
-      it { is_expected.to contain_service('xinetd').with(
         'ensure'     => 'stopped',
         'enable'     => false,
         'hasstatus'  => true,

@@ -90,7 +90,7 @@ class cis_hardening::services::inetd {
   }
 
   # Ensure xinetd is not enabled - Section 2.1.7
-  service { 'xinetd':
+  servide { 'xinetd':
     ensure     => 'stopped',
     enable     => false,
     hasstatus  => true,

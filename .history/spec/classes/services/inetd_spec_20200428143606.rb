@@ -68,37 +68,6 @@ describe 'cis_hardening::services::inetd' do
         'hasrestart' => true,
       )}
 
-      # Ensure time services are not enabled - Section 2.1.5
-      it { is_expected.to contain_service('time-dgram').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-        
-      it { is_expected.to contain_service('time-stream').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
-      # Ensure tftp server is not enabled - Section 2.1.6
-      it { is_expected.to contain_service('tftp').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
-      # Ensure xinetd server is not enabled - Section 2.1.7
-      it { is_expected.to contain_service('xinetd').with(
-        'ensure'     => 'stopped',
-        'enable'     => false,
-        'hasstatus'  => true,
-        'hasrestart' => true,
-      )}
-
       # Ensure manifest compiles with all dependencies
       it { is_expected.to compile.with_all_deps }
     end

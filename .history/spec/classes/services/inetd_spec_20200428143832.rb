@@ -69,7 +69,7 @@ describe 'cis_hardening::services::inetd' do
       )}
 
       # Ensure time services are not enabled - Section 2.1.5
-      it { is_expected.to contain_service('time-dgram').with(
+      t { is_expected.to contain_service('time-dgram').with(
         'ensure'     => 'stopped',
         'enable'     => false,
         'hasstatus'  => true,
