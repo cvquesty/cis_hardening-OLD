@@ -25,14 +25,14 @@ describe 'cis_hardening::setup::prochardening' do
         'ensure' => 'present',
         'path'   => '/etc/sysctl.d/99-sysctl.conf',
         'line'   => 'fs.suid_dumpable = 0',
-      ).that_notifies('Exec[restart_prochardening_sysctl]')}
+      ).that_notifies(Exec[restart_prochardening_sysctl])}
 
       # Ensure Address space layout randomization - Section 1.5.3
       it { is_expected.to contain_file_line('randomize_va_space').with(
         'ensure' => 'present',
         'path'   => '/etc/sysctl.d/99-sysctl.conf',
         'line'   => 'kernel.randomize_va_space = 2',
-      ).that_notifies('Exec[restart_prochardening_sysctl]')}
+      ).that_notifies(Exec[restart_prochardening_sysctl])}
 
       # Ensure prelink is disabled - Section 1.5.3
       it { is_expected.to contain_package('prelink').with(
