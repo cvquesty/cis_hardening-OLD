@@ -32,7 +32,7 @@ describe 'cis_hardening::services::special' do
         'group'   => 'root',
         'mode'    => '0644',
         'source'  => 'puppet:///modules/cis_hardening/etc_sysconfig_ntpd',
-      ).that_requires('File[/etc/ntp.conf]')}
+      ).that_requires('File[/etc/ntp.conf')}
 
       it { is_expected.to contain_file_line('ntp_options').with(
         'ensure' => 'present',
@@ -42,7 +42,7 @@ describe 'cis_hardening::services::special' do
       )}
 
       # Ensure Chrony is Configured - Section 2.2.1.3
-      it { is_expected.to contain_file('/etc/chrony.conf').with(
+      it { is_expoected.to contain_file('/etc/chrony.conf').with(
         'ensure' => 'present',
         'owner'  => 'root',
         'group'  => 'root',
@@ -138,43 +138,7 @@ describe 'cis_hardening::services::special' do
           'match'  => '^inet_interfaces\ =',
         )}
 
-        # Ensure NIS Server is not enabled - Section 2.2.16
-        it { is_expected.to contain_service('ypserv').with(
-          'enable' => false,
-        )}
-
-        # Ensure RSH Server is not enabled - Section 2.2.17
-        it { is_expected.to contain_service('rsh.socket').with(
-          'enable' => false,
-        )}
-
-        it { is_expected.to contain_service('rlogin.socket').with(
-          'enable' => false,
-        )}
-
-        it { is_expected.to contain_service('rexec.socket').with(
-          'enable' => false,
-        )}
-
-        # Ensure Telnet Server is not enabled - Section 2.2.18
-        it { is_expected.to contain_service('telnet.socket').with(
-          'enable' => false,
-        )}
-
-        # Ensure tftp Server is not enabled - Section 2.2.19
-        it { is_expected.to contain_service('tftp.socket').with(
-          'enable' => false,
-        )}
-
-        # Ensure Rsync Service is not enabled - Section 2.2.20
-        it { is_expected.to contain_service('rsyncd').with(
-          'enable' => false,
-        )}
-
-        # Ensure Talk server is not enabled - Section 2.2.21
-        it { is_expected.to contain_service('ntalk').with(
-          'enable' => false,
-        )}
+        
 
 
 

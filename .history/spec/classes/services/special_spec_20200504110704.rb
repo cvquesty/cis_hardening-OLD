@@ -32,7 +32,7 @@ describe 'cis_hardening::services::special' do
         'group'   => 'root',
         'mode'    => '0644',
         'source'  => 'puppet:///modules/cis_hardening/etc_sysconfig_ntpd',
-      ).that_requires('File[/etc/ntp.conf]')}
+      ).that_requires('File[/etc/ntp.conf')}
 
       it { is_expected.to contain_file_line('ntp_options').with(
         'ensure' => 'present',
@@ -42,7 +42,7 @@ describe 'cis_hardening::services::special' do
       )}
 
       # Ensure Chrony is Configured - Section 2.2.1.3
-      it { is_expected.to contain_file('/etc/chrony.conf').with(
+      it { is_expoected.to contain_file('/etc/chrony.conf').with(
         'ensure' => 'present',
         'owner'  => 'root',
         'group'  => 'root',

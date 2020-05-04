@@ -176,4 +176,7 @@ class cis_hardening::services::special {
   service { 'ntalk':
     enable => false,
   }
+
+  
+
 }

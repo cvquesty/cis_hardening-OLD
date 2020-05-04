@@ -136,44 +136,8 @@ class cis_hardening::services::special {
     ensure => 'present',
     path   => '/etc/postfix/main.cf',
     line   => 'inet_interfaces = loopback-only',
-    match  => '^inet_interfaces\ =',
+    match  => '^inet_interfaces.*'
   }
 
-  # Ensure NIS Server is not enabled - Section 2.2.16
-  service { 'ypserv':
-    enable => false,
-  }
 
-  # Ensure RSH Server is not enabled - Section 2.2.17
-  service { 'rsh.socket':
-    enable => false,
-  }
-
-  service { 'rlogin.socket':
-    enable => false,
-  }
-
-  service { 'rexec.socket':
-    enable => false,
-  }
-
-  # Ensure Telnet Server is not enabled - Section 2.2.18
-  service { 'telnet.socket':
-    enable => false,
-  }
-
-  # Ensure tftp Server is not enabled - Section 2.2.19
-  service { 'tftp.socket':
-    enable => false,
-  }
-
-  # Ensure Rsync Service is not enabled - Section 2.2.20
-  service { 'rsyncd':
-    enable => false,
-  }
-
-  # Ensure Talk server is not enabled - Section 2.2.21
-  service { 'ntalk':
-    enable => false,
-  }
 }

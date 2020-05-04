@@ -172,8 +172,4 @@ class cis_hardening::services::special {
     enable => false,
   }
 
-  # Ensure Talk server is not enabled - Section 2.2.21
-  service { 'ntalk':
-    enable => false,
-  }
 }

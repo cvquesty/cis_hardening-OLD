@@ -167,13 +167,6 @@ class cis_hardening::services::special {
     enable => false,
   }
 
-  # Ensure Rsync Service is not enabled - Section 2.2.20
-  service { 'rsyncd':
-    enable => false,
-  }
+  
 
-  # Ensure Talk server is not enabled - Section 2.2.21
-  service { 'ntalk':
-    enable => false,
-  }
 }
