@@ -6,7 +6,6 @@
 # Hardens PAM in line with CIS standards for CentOS 7.x Servers
 #
 class cis_hardening::auth::pam {
-
   # Ensure Password creation requirements are configured - Section 5.3.1
   file { '/etc/security/pwquality.conf':
     ensure => 'present',
