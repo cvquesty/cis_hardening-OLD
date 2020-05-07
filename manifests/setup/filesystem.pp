@@ -9,60 +9,76 @@ class cis_hardening::setup::filesystem {
   # Section 1.1 - Filesystem Configuration
   # Disable unused Filesystems - Section 1.1.1
 
+  # Ensure CIS.conf exists to add following to
+  file { '/etc/modprobe.d/CIS.conf':
+    ensure => 'file',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+
   # Ensure mounting of cramfs filesystems is disabled - Section 1.1.1.1
   file_line { 'cramfs_disable':
-    ensure => 'present',
-    path   => '/etc/modprobe.d/CIS.conf',
-    line   => 'install cramfs /bin/true',
+    ensure  => 'present',
+    path    => '/etc/modprobe.d/CIS.conf',
+    line    => 'install cramfs /bin/true',
+    require => File['/etc/modprobe.d/CIS.conf'],
   }
 
   # Ensure mounting of freevxfs filesystems is disabled - Section 1.1.1.2
   file_line { 'freevxfs_disable':
-    ensure => 'present',
-    path   => '/etc/modprobe.d/CIS.conf',
-    line   => 'install freevxfs /bin/true',
+    ensure  => 'present',
+    path    => '/etc/modprobe.d/CIS.conf',
+    line    => 'install freevxfs /bin/true',
+    require => File['/etc/modprobe.d/CIS.conf'],
   }
 
   # Ensure mounting of jffs2 Filesystems is disabled - Section 1.1.1.3
   file_line { 'jffs2_disable':
-    ensure => 'present',
-    path   => '/etc/modprobe.d/CIS.conf',
-    line   => 'install jffs2 /bin/true',
+    ensure  => 'present',
+    path    => '/etc/modprobe.d/CIS.conf',
+    line    => 'install jffs2 /bin/true',
+    require => File['/etc/modprobe.d/CIS.conf'],
   }
 
   # Ensure mounting of hfs filesystems is disabled - Section 1.1.1.4
   file_line { 'hfs_disable':
-    ensure => 'present',
-    path   => '/etc/modprobe.d/CIS.conf',
-    line   => 'install hfs /bin/true',
+    ensure  => 'present',
+    path    => '/etc/modprobe.d/CIS.conf',
+    line    => 'install hfs /bin/true',
+    require => File['/etc/modprobe.d/CIS.conf'],
   }
 
   # Ensure mounting of hfsplus filesystems is disabled - Section 1.1.1.5
   file_line { 'hfsplus_disable':
-    ensure => 'present',
-    path   => '/etc/modprobe.d/CIS.conf',
-    line   => 'install hfsplus /bin/true',
+    ensure  => 'present',
+    path    => '/etc/modprobe.d/CIS.conf',
+    line    => 'install hfsplus /bin/true',
+    require => File['/etc/modprobe.d/CIS.conf'],
   }
 
   # Ensure mounting of squashfs filesystems is disabled - Section 1.1.1.6
   file_line { 'squashfs_disable':
-    ensure => 'present',
-    path   => '/etc/modprobe.d/CIS.conf',
-    line   => 'install squashfs /bin/true',
+    ensure  => 'present',
+    path    => '/etc/modprobe.d/CIS.conf',
+    line    => 'install squashfs /bin/true',
+    require => File['/etc/modprobe.d/CIS.conf'],
   }
 
   # Ensure mounting of udf filesystem is disabled - Section 1.1.1.7
   file_line { 'udf_disable':
-    ensure => 'present',
-    path   => '/etc/modprobe.d/CIS.conf',
-    line   => 'install udf /bin/true',
+    ensure  => 'present',
+    path    => '/etc/modprobe.d/CIS.conf',
+    line    => 'install udf /bin/true',
+    require => File['/etc/modprobe.d/CIS.conf'],
   }
 
   # Ensure mounting of FAT filesystems (vfat) is disabled - Section 1.1.1.8
   file_line { 'vfat_disable':
-    ensure => 'present',
-    path   => '/etc/modprobe.d/CIS.conf',
-    line   => 'install vfat /bin/true',
+    ensure  => 'present',
+    path    => '/etc/modprobe.d/CIS.conf',
+    line    => 'install vfat /bin/true',
+    require => File['/etc/modprobe.d/CIS.conf'],
   }
 
   # Ensure separate partition exists for /tmp - Section 1.1.2

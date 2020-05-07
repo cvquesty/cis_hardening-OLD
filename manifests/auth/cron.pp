@@ -5,7 +5,7 @@
 class cis_hardening::auth::cron {
 
   # Enable Cron Daemon - Section 5.1.1
-  service { 'cron':
+  service { 'crond':
     ensure     => 'running',
     hasstatus  => true,
     hasrestart => true,
