@@ -101,7 +101,7 @@ class cis_hardening::network::netparams {
   file_line { 'ignore_broadcasts':
     ensure => 'present',
     path   => '/etc/sysctl.d/99-sysctl.conf',
-    line   => 'net.ipv4.icmp_echo_ignore_broadcasts = 1',
+    line   => 'net.ipv4.icmp_echo_ignore_broadcast = 1',
     notify => Exec['restart_sysctl'],
   }
 

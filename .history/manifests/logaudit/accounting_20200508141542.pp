@@ -39,7 +39,7 @@ class cis_hardening::logaudit::accounting {
 
   exec { 'set_action_mail_account':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => "perl -pi -e 's/^action_mail_acct.*$/action_mail_acct = root/' /etc/audit/auditd.conf",
+    command => "perl -pi -e 's/^action_mail_acct.*$/action_mail_acct = root' /etc/audit/auditd.conf",
     onlyif  => "grep '^mail_action_acct' /etc/audit/auditd.conf",
     notify  => Exec['restart_auditd'],
   }
@@ -125,7 +125,7 @@ class cis_hardening::logaudit::accounting {
 
   file_line { 'ownerchange_gshadow':
     ensure => 'present',
-    path   => '/etc/audit/audit.rules',
+    path   => '/etc/audot/audit.rules',
     line   => '-w /etc/gshadow -p wa -k identity',
   }
 

@@ -54,7 +54,7 @@ describe 'cis_hardening::logaudit::accounting' do
       it {
         is_expected.to contain_exec('set_max_logfile_action').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^max_log_file_action.*$/max_log_file_action = keep_logs/' /etc/audit/auditd.conf",
+          'command' => "perl -pi -e 's/^max_log_file_action.*$/max_log_file_action = keep_logs' /etc/audit/auditd.conf",
           'onlyif'  => "grep '^max_log_file_action' /etc/audit/auditd.conf",
         )
       }
@@ -143,7 +143,7 @@ describe 'cis_hardening::logaudit::accounting' do
       it {
         is_expected.to contain_file_line('ownerchange_gshadow').with(
           'ensure' => 'present',
-          'path'   => '/etc/audit/audit.rules',
+          'path'   => '/etc/audot/audit.rules',
           'line'   => '-w /etc/gshadow -p wa -k identity',
         )
       }

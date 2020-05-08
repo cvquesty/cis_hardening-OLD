@@ -22,7 +22,7 @@ class cis_hardening::services::special {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    source  => 'puppet:///modules/cis_hardening/etc_ntp_conf',
+    source  => 'puppet:///modules/cis_hardening/ntp_conf',
     require => Package['ntp'],
   }
 

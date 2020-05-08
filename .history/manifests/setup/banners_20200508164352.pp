@@ -40,7 +40,7 @@ class cis_hardening::setup::banners {
   }
 
   # Check that GDM is even installed before performing next section
-  if $facts['gdm'] == 'present' {
+  if $gdm == 'present' {} 
     # Ensure GDM login banner is configured - Section 1.7.2
     file_line { 'gdm_userdb':
       ensure => 'present',
@@ -53,7 +53,7 @@ class cis_hardening::setup::banners {
       path   => '/etc/dconf/profile/gdm',
       line   => 'system-db:gdm',
     }
-
+      
     file_line { 'gdm_filedb':
       ensure => 'present',
       path   => '/etc/dconf/profile/gdm',

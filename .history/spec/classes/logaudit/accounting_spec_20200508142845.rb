@@ -143,7 +143,7 @@ describe 'cis_hardening::logaudit::accounting' do
       it {
         is_expected.to contain_file_line('ownerchange_gshadow').with(
           'ensure' => 'present',
-          'path'   => '/etc/audit/audit.rules',
+          'path'   => '/etc/audot/audit.rules',
           'line'   => '-w /etc/gshadow -p wa -k identity',
         )
       }

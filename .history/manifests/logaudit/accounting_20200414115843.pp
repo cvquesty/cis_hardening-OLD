@@ -17,7 +17,7 @@ class cis_hardening::logaudit::accounting {
   # Ensure audit log storage size is configured - Section 4.1.1.1
   exec { 'set_auditd_logfile_size':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => "perl -pi -e 's/^max_log_file.*$/max_log_file = 1024/' /etc/audit/auditd.conf",
+    command => "perl -pi -e 's/^max_log_file.*$/max_log_file = 1024' /etc/audit/auditd.conf",
     onlyif  => "grep '^max_log_file' /etc/audit/auditd.conf",
     notify  => Exec['restart_auditd'],
   }
@@ -39,7 +39,7 @@ class cis_hardening::logaudit::accounting {
 
   exec { 'set_action_mail_account':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => "perl -pi -e 's/^action_mail_acct.*$/action_mail_acct = root/' /etc/audit/auditd.conf",
+    command => "perl -pi -e 's/^action_mail_acct.*$/action_mail_acct = root' /etc/audit/auditd.conf",
     onlyif  => "grep '^mail_action_acct' /etc/audit/auditd.conf",
     notify  => Exec['restart_auditd'],
   }
@@ -54,7 +54,7 @@ class cis_hardening::logaudit::accounting {
   # Ensure audit logs are not automatically deleted - Section 4.1.1.3
   exec { 'set_max_logfile_action':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => "perl -pi -e 's/^max_log_file_action.*$/max_log_file_action = keep_logs/' /etc/audit/auditd.conf",
+    command => "perl -pi -e 's/^max_log_file_action.*$/max_log_file_action = keep_logs' /etc/audit/auditd.conf",
     onlyif  => "grep '^max_log_file_action' /etc/audit/auditd.conf",
   }
 
@@ -125,7 +125,7 @@ class cis_hardening::logaudit::accounting {
 
   file_line { 'ownerchange_gshadow':
     ensure => 'present',
-    path   => '/etc/audit/audit.rules',
+    path   => '/etc/audot/audit.rules',
     line   => '-w /etc/gshadow -p wa -k identity',
   }
 
