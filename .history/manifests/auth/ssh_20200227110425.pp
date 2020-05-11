@@ -103,7 +103,7 @@ class cis_hardening::auth::ssh {
   # Ensure SSH Access is Limited - Section 5.2.14
   # Unused in sshd_config. Managed via IAM
 
-  # Ensure SSH Warning Banner is Configured - Section 5.2.15
+  # Ensure SSH Warning Banner is Configured
   exec { 'set_ssh_banner':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => "perl -pi -e 's/^#Banner.*$/Banner /etc/issue.net/' /etc/ssh/sshd_config",
