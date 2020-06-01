@@ -13,6 +13,14 @@ class cis_hardening::logaudit::accounting {
     command => '/bin/systemctl restart auditd',
   }
 
+  # AuditD is using an include directory now, but I have opted for audit.rules for the time being.
+  # Expect refactoring here
+  file { '/etc/audit/audit.rules':
+    ensure => 'present',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0640',
+  }
 
   # Ensure audit log storage size is configured - Section 4.1.1.1
   exec { 'set_auditd_logfile_size':
@@ -64,6 +72,7 @@ class cis_hardening::logaudit::accounting {
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
+    require    => File['/etc/audit/audit.rules'],
   }
 
   # Ensure defaults directory is present for grub settings - Section 4.1.3 prerequisites
