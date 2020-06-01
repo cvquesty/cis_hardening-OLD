@@ -33,7 +33,7 @@ class cis_hardening::setup::accessctl {
   # Ensure SELINUX Policy is configured - Section 1.6.1.3
   file_line { 'selinux_policy':
     ensure => 'present',
-    path   => '/etv/selinux/config',
+    path   => '/etc/selinux/config',
     line   => 'SELINUXTYPE=targeted',
     match  => '^SELINUXTYPE\=',
   }

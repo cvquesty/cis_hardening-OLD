@@ -1,4 +1,3 @@
 {
-    "git.autofetch": true,
-    "puppet.editorService.puppet.version": "6.14.0"
+    "git.autofetch": true
 }
