@@ -7,6 +7,11 @@
 #   include cis_hardening::auth::accounts
 class cis_hardening::auth::accounts {
 
+  # This is very near the entry point. I use perl quite a bit, so installing it here
+  package { 'perl':
+    ensure => 'present',
+  }
+
   # Set Shadow Password Suite Parameters - Section 5.4.1
 
   # Ensure Password expiration is 365 days or less - Section 5.4.1.1
