@@ -40,7 +40,7 @@ describe 'cis_hardening::auth::accounts' do
         is_expected.to contain_exec('pass_warn_age').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
           'command' => "perl -pi -e 's/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs",
-          'onlyif'  => "test ! `grep ^PASS_WARN_AGE /etc/logn.defs |awk '{print \$2}'` -lt 7",
+          'onlyif'  => "test ! `grep ^PASS_WARN_AGE /etc/login.defs |awk '{print \$2}'` -lt 7",
         )
       }
 
@@ -56,8 +56,8 @@ describe 'cis_hardening::auth::accounts' do
       it {
         is_expected.to contain_exec('set_login_umask_etcprofile').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/umask.*$/umask 027/' /etc/profile",
-          'onlyif'  => 'test ! `grep umask /etc/profile`',
+          'command' => "echo \"umask 027\" >> /etc/profile",
+          'onlyif'  => 'test ! `grep umask |grep 027 /etc/profile`',
         )
       }
 
@@ -65,6 +65,7 @@ describe 'cis_hardening::auth::accounts' do
         is_expected.to contain_exec('set_login_umask_etcbashrc').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
           'command' => "perl -pi -e 's/umask.*$/umask 027/' /etc/bashrc",
+
           'unless'  => 'test `grep umask /etc/bashrc`',
         )
       }
@@ -73,7 +74,7 @@ describe 'cis_hardening::auth::accounts' do
       it {
         is_expected.to contain_exec('set_user_timeout_etcprofile').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^TMOUT=.*$/TMOUT=600/' /etc/profile",
+          'command' => "echo TMOUT=600 >> /etc/profile",
           'onlyif'  => 'test ! `grep ^TMOUT /etc/profile`',
         )
       }
@@ -81,8 +82,8 @@ describe 'cis_hardening::auth::accounts' do
       it {
         is_expected.to contain_exec('set_user_timeout_etcbashrc').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^TMOUT=.*$/TMOUT=600/' /etc/bashrc",
-          'onlyif'  => 'test `grep ^TMOUT /etc/bashrc`',
+          'command' => "echo \"TMOUT=600\" >> /etc/bashrc",
+          'onlyif'  => 'test ! `grep TMOUT /etc/bashrc`',
         )
       }
 
