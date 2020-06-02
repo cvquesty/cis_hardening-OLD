@@ -7,19 +7,26 @@
 #   include cis_hardening::logaudit::accounting
 class cis_hardening::logaudit::accounting {
 
+  # Ensure that audit is installed
+  package { 'audit':
+    ensure => 'present',
+  }
+
   # Exec to notify from auditd rules changes - Section 4.1.1
   exec { 'restart_auditd':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => '/bin/systemctl restart auditd',
+    require => Package['audit'],
   }
 
   # AuditD is using an include directory now, but I have opted for audit.rules for the time being.
   # Expect refactoring here
   file { '/etc/audit/audit.rules':
-    ensure => 'present',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0640',
+    ensure  => 'present',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0640',
+    require => Package['audit'],
   }
 
   # Ensure audit log storage size is configured - Section 4.1.1.1

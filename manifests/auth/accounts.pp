@@ -18,21 +18,21 @@ class cis_hardening::auth::accounts {
   exec { 'pass_max_days':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => "perl -pi -e 's/^PASS_MAX_DAYS.*$/PASS_MAX_DAYS 365/' /etc/login.defs",
-    onlyif  => "test `grep ^PASS_MAX_DAYS /etc/login.defs |awk '{print \$2}'` -gt 365",
+    onlyif  => "test ! `grep ^PASS_MAX_DAYS /etc/login.defs |awk '{print \$2}'` -gt 365",
   }
 
   # Ensure minimum days between password changes is 7 or more - Section 5.4.1.2
   exec { 'pass_min_days':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => "perl -pi -e 's/^PASS_MIN_DAYS.*$/PASS_MIN_DAYS 7/' /etc/login.defs",
-    onlyif  => "test `grep ^PASS_MIN_DAYS /etc/login.defs |awk '{print \$2}'` -gt 7",
+    onlyif  => "test ! `grep ^PASS_MIN_DAYS /etc/login.defs |awk '{print \$2}'` -gt 7",
   }
 
   # Ensure Pasword Expiration warning days is 7 or more - Section 5.4.1.3
   exec { 'pass_warn_age':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => "perl -pi -e 's/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs",
-    onlyif  => "test `grep ^PASS_WARN_AGE /etc/logn.defs |awk '{print \$2}'` -lt 7",
+    onlyif  => "test ! `grep ^PASS_WARN_AGE /etc/login.defs |awk '{print \$2}'` -lt 7",
   }
 
   # Ensure inactive password lock is 30 days or less - Section 5.4.1.4
@@ -57,27 +57,30 @@ class cis_hardening::auth::accounts {
   # Ensure default user umask is 027 or more restrictive - Section 5.4.4
   exec { 'set_login_umask_etcprofile':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => "perl -pi -e 's/umask.*$/umask 027/' /etc/profile",
-    onlyif  => 'test `grep umask /etc/profile`',
+    command => 'echo "umask 027" >> /etc/profile',
+    onlyif  => 'test ! `grep umask |grep 027 /etc/profile`',
+    unless  => 'test `grep umask /etc/profile`',
   }
 
   exec { 'set_login_umask_etcbashrc':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => "perl -pi -e 's/umask.*$/umask027/' /etc/bashrc",
-    onlyif  => 'test `grep umask /etc/bashrc`',
+    command => "perl -pi -e 's/umask.*$/umask 027/' /etc/bashrc",
+    unless  => 'test `grep umask /etc/bashrc`',
   }
 
   # Ensure default user shell tieout is 900 seconds or less - Section 5.4.5
   exec { 'set_user_timeout_etcprofile':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => "perl -pi -e 's/^TMOUT=.*$/TMOUT=600/' /etc/profile",
-    onlyif  => 'test `grep ^TMOUT /etc/profile`',
+    command => 'echo TMOUT=600 >> /etc/profile',
+    onlyif  => 'test ! `grep ^TMOUT /etc/profile`',
+    unless  => 'test `grep ^TMOUT /etc/profile`',
   }
 
   exec { 'set_user_timeout_etcbashrc':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-    command => "perl -pi -e 's/^TMOUT=.*$/TMOUT=600/' /etc/bashrc",
-    onlyif  => 'test `grep ^TMOUT /etc/bashrc`',
+    command => 'echo "TMOUT=600" >> /etc/bashrc',
+    onlyif  => 'test ! `grep TMOUT /etc/bashrc`',
+    unless  => "test `grep TMOUT /etc/bashrc |awk -F '=' '{print \$2}'` -ne 600",
   }
 
   # Ensure root login is restricted to system console - Section 5.5

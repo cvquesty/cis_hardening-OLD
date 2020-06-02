@@ -4,12 +4,18 @@
 #
 class cis_hardening::auth::cron {
 
+  # Install Cronie to run cron
+  package { 'cronie':
+    ensure => 'installed',
+  }
+
   # Enable Cron Daemon - Section 5.1.1
   service { 'crond':
     ensure     => 'running',
     hasstatus  => true,
     hasrestart => true,
     enable     => true,
+    require    => Package['cronie'],
   }
 
   # Ensure permissions on /etc/crontab are configured - Section 5.1.2

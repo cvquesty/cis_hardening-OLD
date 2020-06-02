@@ -33,7 +33,7 @@ require 'spec_helper_acceptance'
   describe file('/etc/bashrc') do
     it do
       is_expected.to be_file
-      is_expected.to contain 'umask027'
+      is_expected.to contain 'umask 027'
       is_expected.to contain 'TMOUT=600'
     end
   end

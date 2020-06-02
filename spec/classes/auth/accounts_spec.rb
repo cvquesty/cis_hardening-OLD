@@ -55,10 +55,10 @@ describe 'cis_hardening::auth::accounts' do
       }
 
       it {
-        is_expected.to contain_exec('set_login_umask_etcbashrc').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/umask.*$/umask027/' /etc/bashrc",
-          'onlyif'  => 'test `grep umask /etc/bashrc`',
+        is_expected.to contain_file_line('set_login_umask_etcbashrc').with(
+          path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+          command => "perl -pi -e 's/umask.*$/umask 027/' /etc/bashrc",
+          unless  => 'test `grep umask /etc/bashrc`',
         )
       }
 

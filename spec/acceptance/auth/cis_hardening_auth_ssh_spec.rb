@@ -31,7 +31,7 @@ describe file('/etc/ssh/sshd_config') do
     is_expected.to contain 'ClientAliveInterval 300'
     is_expected.to contain 'ClientAliveCountMax 0'
     is_expected.to contain 'LoginGraceTime 60'
-    is_expected.to contain 'Banner /etc/issue.net/'
+    is_expected.to contain 'Banner /etc/issue.net'
   end
 end
 
