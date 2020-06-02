@@ -67,7 +67,7 @@ describe 'cis_hardening::auth::ssh' do
 
       # Ensure that Ensure SSH HostBased Authentication is Disabled - Section 5.2.7
       it {
-        is_expected.to contain_file_line('set_hosbasedauth_off').with(
+        is_expected.to contain_file_line('set_hostbasedauth_off').with(
           'ensure' => 'present',
           'path'   => '/etc/ssh/sshd_config',
           'line'   => 'HostBasedAuthentication no',

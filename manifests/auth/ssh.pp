@@ -38,7 +38,7 @@ class cis_hardening::auth::ssh {
   }
 
   # Ensure SSH MaxAuthTries is set to 4 or less - Section 5.2.5
-  file_line { 'set_ssh_maxauthretries':
+  file_line { 'set_ssh_maxauthtries':
     ensure => 'present',
     path   => '/etc/ssh/sshd_config',
     line   => 'MaxAuthTries 4',
@@ -66,7 +66,7 @@ class cis_hardening::auth::ssh {
   }
 
   # Ensure PermitEmptyPasswords is Disabled - Section 5.2.9
-  file_line { 'set-emptypasswords_off':
+  file_line { 'set_emptypasswords_off':
     ensure => 'present',
     path   => '/etc/ssh/sshd_config',
     line   => 'PermitEmptyPasswords no',
