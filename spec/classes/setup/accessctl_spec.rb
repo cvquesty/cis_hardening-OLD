@@ -43,7 +43,7 @@ describe 'cis_hardening::setup::accessctl' do
       it {
         is_expected.to contain_file_line('selinux_policy').with(
           'ensure' => 'present',
-          'path'   => '/etv/selinux/config',
+          'path'   => '/etc/selinux/config',
           'line'   => 'SELINUXTYPE=targeted',
           'match'  => '^SELINUXTYPE\=',
         )

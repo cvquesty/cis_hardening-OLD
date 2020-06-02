@@ -10,6 +10,13 @@ describe 'cis_hardening::auth::accounts' do
         is_expected.to contain_class('cis_hardening::auth::accounts')
       }
 
+      # Ensure Perl is installed
+      it {
+        is_expected.to contain_package('perl').with(
+          'ensure' => 'present',
+        )
+      }
+
       # Check that Ensure Password expiration is 365 days or less - Section 5.4.1.1
       it {
         is_expected.to contain_exec('pass_max_days').with(
@@ -56,9 +63,9 @@ describe 'cis_hardening::auth::accounts' do
 
       it {
         is_expected.to contain_file_line('set_login_umask_etcbashrc').with(
-          path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          command => "perl -pi -e 's/umask.*$/umask 027/' /etc/bashrc",
-          unless  => 'test `grep umask /etc/bashrc`',
+          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+          'command' => "perl -pi -e 's/umask.*$/umask 027/' /etc/bashrc",
+          'unless'  => 'test `grep umask /etc/bashrc`',
         )
       }
 

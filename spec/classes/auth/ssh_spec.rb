@@ -22,82 +22,82 @@ describe 'cis_hardening::auth::ssh' do
 
       # Ensure that Set sshd_config Options - Section 5.2.2
       it {
-        is_expected.to contain_exec('set_ssh_protocol').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#Protocol.*$/Protocol 2/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^Protocol /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_ssh_protocol').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'Protocol 2',
         )
       }
 
       # Ensure that Set SSH LogLevel to INFO - Section 5.2.3
       it {
-        is_expected.to contain_exec('set_ssh_loglevel').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#LogLevel.*$/LogLevel INFO/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^LogLevel /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_ssh_loglevel').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'LogLevel INFO',
         )
       }
 
       # Ensure that Ensure SSH X11 Forwarding is disabled - Section 5.2.4
       it {
-        is_expected.to contain_exec('set_x11_forwarding').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#X11Forwarding.*$/X11Forwarding no/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^X11Forwarding /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_x11_forwarding').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'X11Forwarding no',
         )
       }
 
       # Ensure that Ensure SSH MaxAuthTries is set to 4 or less - Section 5.2.5
       it {
-        is_expected.to contain_exec('set_ssh_maxauthtries').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#MaxAuthTries.*$/MaxAuthTries 4/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^MaxAuthTries /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_ssh_maxauthtries').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'MaxAuthTries 4',
         )
       }
 
       # Ensure that Ensure SSH IgnoreRhosts is enabled - Section 5.2.6
       it {
-        is_expected.to contain_exec('set_ssh_ignore_rhosts').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#IgnoreRhosts.*$/IgnoreRhosts yes/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^IgnoreRhosts /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_ssh_ignore_rhosts').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'IgnoreRhosts yes',
         )
       }
 
       # Ensure that Ensure SSH HostBased Authentication is Disabled - Section 5.2.7
       it {
-        is_expected.to contain_exec('set_hosbasedauth_off').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#HostbasedAuthentication.*$/HostbasedAuthentication no/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^HostbasedAuthentication /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_hosbasedauth_off').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'HostBasedAuthentication no',
         )
       }
 
       # Ensure that Ensure SSH Root Login is Disabled - Section 5.2.8
       it {
-        is_expected.to contain_exec('set_rootlogin_no').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#PermitRootLogin.*$/PermitRootLogin no/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^PermitRootLogin /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_rootlogin_no').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'PermitRootLogin no',
         )
       }
 
       # Ensure that Ensure PermitEmptyPasswords is Disabled - Section 5.2.9
       it {
-        is_expected.to contain_exec('set_emptypasswords_off').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#PermitEmptyPasswords.*$/PermitEmptyPasswords no/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^PermitEmptyPasswords /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_emptypasswords_off').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'PermitEmptyPasswords no',
         )
       }
 
       # Ensure that Ensure SSH PermitUserEnvironment is Disabled - Section 5.2.10
       it {
-        is_expected.to contain_exec('set_permituserenv_off').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#PermitUserEnvironment.*$/PermitUserEnvironment no/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^PermitUserEnvironment /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_permituserenv_off').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'PermitUserEnvironment no',
         )
       }
 
@@ -107,27 +107,27 @@ describe 'cis_hardening::auth::ssh' do
 
       # Ensure that Ensure SSH Idle Timeout Interval is configured - Section 5.2.12
       it {
-        is_expected.to contain_exec('client_alive_interval').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#ClientAliveInterval.*$/ClientAliveInterval 300/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^ClientAliveInterval /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('client_alive_interval').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'ClientAliveInterval 300',
         )
       }
 
       it {
-        is_expected.to contain_exec('client_alive_count_max').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#ClientAliveCountMax.*$/ClientAliveCountMax 0/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^ClientAliveCountMax /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('client_alive_count_max').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'ClientAliveCountMax 0',
         )
       }
 
       # Ensure that Ensure SSH LoginGraceTime is set to One Minute or Less - Section 5.2.13
       it {
-        is_expected.to contain_exec('login_grace_time').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#LoginGraceTime.*$/LoginGraceTime 60/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^LoginGraceTime /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('login_grace_time').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'LoginGraceTime 60',
         )
       }
 
@@ -135,10 +135,10 @@ describe 'cis_hardening::auth::ssh' do
       # Unused in sshd_config. Managed via IAM
       # Ensure SSH Warning Banner is Configured
       it {
-        is_expected.to contain_exec('set_ssh_banner').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^#Banner.*$/Banner /etc/issue.net/' /etc/ssh/sshd_config",
-          'onlyif'  => 'test ! "grep ^Banner /etc/ssh/sshd_config"',
+        is_expected.to contain_file_line('set_ssh_banner').with(
+          'ensure' => 'present',
+          'path'   => '/etc/ssh/sshd_config',
+          'line'   => 'Banner /etc/issue.net',
         )
       }
 
