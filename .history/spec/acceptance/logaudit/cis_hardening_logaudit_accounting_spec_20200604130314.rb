@@ -17,8 +17,6 @@ require 'spec_helper_acceptance'
   # Ensure succesful filesystem mounts are collected - Section 4.1.13
   # Ensure file deletion events by users are captured - Section 4.1.14
   # Ensure changes to system administration scope (sudoers) is collected - Section 4.1.15
-  # Ensure system administrator actions (sudolog) are collected - Section 4.1.16
-  # Ensure Kernel module loading and unloading are collected - Section 4.1.17
   describe file('/etc/audit/audit.rules') do
       it { is_expected.to be_file }
       it { is_expected.to be_owned_by 'root' }
@@ -51,12 +49,8 @@ require 'spec_helper_acceptance'
       its(:content) { should match /-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts/ }
       its(:content) { should match /-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete/ }
       its(:content) { should match /-w \/etc\/sudoers -p wa -k scope/ }
-      its(:content) { should match /-w \/etc\/sudoers\.d\/ -p wa -k scope/ }
-      its(:content) { should match /-w \/var\/log\/sudo\.log -p wa -k actions/ }
-      its(:content) { should match /-w \/sbin\/insmod -p x -k modules/ }
-      its(:content) { should match /-w \/sbin\/rmmod -p x -k modules/ }
-      its(:content) { should match /-w \/sbin\/modprobe -p x -k modules/ }
-      its(:content) { should match /-a always,exit -F arch=b64 -S init_module -S delete_module -k modules/ }
+      its(:content) { should match /-w \/etc\/sudoers.d\/ -p wa -k scope/ }
+      its(:content) { should match /-w \/var\/log/sudo\.log -p wa -k actions/ }
   end
 
   # Check AuditD Configuration Options
