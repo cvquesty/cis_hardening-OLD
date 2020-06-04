@@ -10,21 +10,30 @@ describe 'cis_hardening::auth::accounts' do
         is_expected.to contain_class('cis_hardening::auth::accounts')
       }
 
+      # Ensure Perl is installed
+      it {
+        is_expected.to contain_package('perl').with(
+          'ensure' => 'present',
+        )
+      }
+
       # Check that Ensure Password expiration is 365 days or less - Section 5.4.1.1
       it {
-        is_expected.to contain_exec('pass_max_days').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^PASS_MAX_DAYS.*$/PASS_MAX_DAYS 365/' /etc/login.defs",
-          'onlyif'  => "test `grep ^PASS_MAX_DAYS /etc/login.defs |awk '{print \$2}'` -gt 365",
+        is_expected.to contain_file_line('pass_max_days').with(
+          'ensure' => 'present',
+          'path'   => '/etc/login.defs',
+          'line'   => 'PASS_MAX_DAYS 365',
+          'match'  => '^PASS_MAX_DAYS\ ',
         )
       }
 
       # Check that Ensure minimum days between password changes is 7 or more - Section 5.4.1.2
       it {
-        is_expected.to contain_exec('pass_min_days').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^PASS_MIN_DAYS.*$/PASS_MIN_DAYS 7/' /etc/login.defs",
-          'onlyif'  => "test `grep ^PASS_MIN_DAYS /etc/login.defs |awk '{print \$2}'` -gt 7",
+        is_expected.to contain_file_line('pass_min_days').with(
+          'ensure' => 'present',
+          'path'   => '/etc/login.defs',
+          'line'   => 'PASS_MIN_DAYS 7',
+          'match'  => '^PASS_MIN_DAYS\ ',
         )
       }
 
@@ -33,7 +42,7 @@ describe 'cis_hardening::auth::accounts' do
         is_expected.to contain_exec('pass_warn_age').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
           'command' => "perl -pi -e 's/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs",
-          'onlyif'  => "test `grep ^PASS_WARN_AGE /etc/logn.defs |awk '{print \$2}'` -lt 7",
+          'onlyif'  => "test ! `grep ^PASS_WARN_AGE /etc/login.defs |awk '{print \$2}'` -lt 7",
         )
       }
 
@@ -49,16 +58,17 @@ describe 'cis_hardening::auth::accounts' do
       it {
         is_expected.to contain_exec('set_login_umask_etcprofile').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/umask.*$/umask 027/' /etc/profile",
-          'onlyif'  => 'test `grep umask /etc/profile`',
+          'command' => "echo \"umask 027\" >> /etc/profile",
+          'onlyif'  => 'test ! `grep umask |grep 027 /etc/profile`',
         )
       }
 
       it {
         is_expected.to contain_exec('set_login_umask_etcbashrc').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/umask.*$/umask027/' /etc/bashrc",
-          'onlyif'  => 'test `grep umask /etc/bashrc`',
+          'command' => "perl -pi -e 's/umask.*$/umask 027/' /etc/bashrc",
+
+          'unless'  => 'test `grep umask /etc/bashrc`',
         )
       }
 
@@ -66,16 +76,16 @@ describe 'cis_hardening::auth::accounts' do
       it {
         is_expected.to contain_exec('set_user_timeout_etcprofile').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^TMOUT=.*$/TMOUT=600/' /etc/profile",
-          'onlyif'  => 'test `grep ^TMOUT /etc/profile`',
+          'command' => "echo TMOUT=600 >> /etc/profile",
+          'onlyif'  => 'test ! `grep ^TMOUT /etc/profile`',
         )
       }
 
       it {
         is_expected.to contain_exec('set_user_timeout_etcbashrc').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^TMOUT=.*$/TMOUT=600/' /etc/bashrc",
-          'onlyif'  => 'test `grep ^TMOUT /etc/bashrc`',
+          'command' => "echo \"TMOUT=600\" >> /etc/bashrc",
+          'onlyif'  => 'test ! `grep TMOUT /etc/bashrc`',
         )
       }
 

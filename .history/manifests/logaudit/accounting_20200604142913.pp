@@ -109,6 +109,7 @@ class cis_hardening::logaudit::accounting {
     ensure  => 'present',
     path    => '/etc/default/grub',
     line    => 'GRUB_CMDLINE_LINUX="audit=1"',
+    match   => '^GRUB_CMDLINE_LINUX=',
     require => File['/etc/default/grub'],
   }
 

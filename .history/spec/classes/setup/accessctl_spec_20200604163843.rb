@@ -22,10 +22,10 @@ describe 'cis_hardening::setup::accessctl' do
 
       it {
         is_expected.to contain_file_line('grub_selinux').with(
-          'ensure' => 'present',
-          'path'   => '/etc/default/grub',
-          'line'   => 'GRUB_CMDLINE_LINUX="audit=1"',
-          'match'  => '^GRUB_CMDLINE_LINUX\=',
+          'ensure => 'present',
+    path   => '/etc/default/grub',
+    line   => 'GRUB_CMDLINE_LINUX="audit=1"',
+    match  => '^GRUB_CMDLINE_LINUX\=',
         )
       }
 

@@ -87,11 +87,10 @@ describe 'cis_hardening::auth::accounts' do
       }
 
       it {
-        is_expected.to contain_file_line('set_user_timeout_etcbashrc').with(
-          'ensure' => 'present',
-          'path'   => '/etc/bashrc',
-          'line'   => 'TMOUT=600',
-          'match'  => '^TMOUT\=',
+        is_expected.to contain_exec('set_user_timeout_etcbashrc').with(
+          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+          'command' => "echo \"TMOUT=600\" >> /etc/bashrc",
+          'onlyif'  => 'test ! `grep TMOUT /etc/bashrc`',
         )
       }
 

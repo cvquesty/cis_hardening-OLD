@@ -36,7 +36,7 @@ require 'spec_helper_acceptance'
     its(:content) { should match /-w \/etc\/issue -p wa -k system-locale/ }
     its(:content) { should match /-w \/etc\/issue\.net -p wa -k system-locale/ }
     its(:content) { should match /-w \/etc\/sysconfig\/network -p wa -k system-locale/ }
-    its(:content) { should match /-w \/etc\/sysconfig\/network-scripts\/ -p wa -k system-locale/ }
+    its(:content) { should match /-w \/etc\/sysconfig\/network-scripts\/ -p wa -k system-locale'/ }
     its(:content) { should match /-w \/etc\/selinux\/ -p wa -k MAC-policy/ }
     its(:content) { should match /-w \/usr\/share\/selinux\/ -p wa -k MAC-policy/ }
     its(:content) { should match /-w \/var\/log\/lastlog -p wa -k logins/ }
@@ -46,8 +46,8 @@ require 'spec_helper_acceptance'
     its(:content) { should match /-w \/var\/run\/btmp -p wa -k logins/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod/ }
-    its(:content) { should match /-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod/ }
-    its(:content) { should match /-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access/ }
+    its(:content) { should match /-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F a  uid>=1000 -F auid!=4294967295 -k perm_mod/ }
+    its(:content) { should match /-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid  !=4294967295 -k access/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete/ }
     its(:content) { should match /-w \/etc\/sudoers -p wa -k scope/ }
@@ -66,7 +66,7 @@ require 'spec_helper_acceptance'
   describe file('/etc/audit/auditd.conf') do
     it { is_expected.to be_file }
     its (:content) { should match /max_log_file = 1024/ }
-    its (:content) { should match /space_left_action\ \=\ email/ }
+    its (:content) { should match /space_left_action = email/ }
     its (:content) { should match /action_mail_acct = root/ }
     its (:content) { should match /admin_space_left_action = SYSLOG/ }
     its (:content) { should match /max_log_file_action = keep_logs/ }

@@ -18,26 +18,28 @@ describe 'cis_hardening::logaudit::accounting' do
 
       # Ensure that Ensure audit log storage size is configured - Section 4.1.1.1
       it {
-        is_expected.to contain_exec('set_auditd_logfile_size').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^max_log_file.*$/max_log_file = 1024' /etc/audit/auditd.conf",
-          'onlyif'  => "grep '^max_log_file' /etc/audit/auditd.conf",
+        is_expected.to contain_file_line('set_auditd_logfile_size').with(
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'max_log_file = 1024',
+          match  => '^max_log_file\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       # Ensure that system is disabled when audit logs are full - Section 4.1.1.2
       it {
-        is_expected.to contain_exec('full_logfile_notify_action').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^space_left_action.*$/space_left_action = email/' /etc/audit/auditd.conf",
-          'onlyif'  => "grep '^^space_left_action' /etc/audit/auditd.conf",
+        is_expected.to contain_file_line('full_logfile_notify_action').with(
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'space_left_action = email',
+          match  => '^space_left_action\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       it {
         is_expected.to contain_exec('set_action_mail_account').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^action_mail_acct.*$/action_mail_acct = root' /etc/audit/auditd.conf",
+          'command' => "perl -pi -e 's/^action_mail_acct.*$/action_mail_acct = root/' /etc/audit/auditd.conf",
           'onlyif'  => "grep '^mail_action_acct' /etc/audit/auditd.conf",
         ).that_notifies('Exec[restart_auditd]')
       }
@@ -54,7 +56,7 @@ describe 'cis_hardening::logaudit::accounting' do
       it {
         is_expected.to contain_exec('set_max_logfile_action').with(
           'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^max_log_file_action.*$/max_log_file_action = keep_logs' /etc/audit/auditd.conf",
+          'command' => "perl -pi -e 's/^max_log_file_action.*$/max_log_file_action = keep_logs/' /etc/audit/auditd.conf",
           'onlyif'  => "grep '^max_log_file_action' /etc/audit/auditd.conf",
         )
       }
@@ -143,7 +145,7 @@ describe 'cis_hardening::logaudit::accounting' do
       it {
         is_expected.to contain_file_line('ownerchange_gshadow').with(
           'ensure' => 'present',
-          'path'   => '/etc/audot/audit.rules',
+          'path'   => '/etc/audit/audit.rules',
           'line'   => '-w /etc/gshadow -p wa -k identity',
         )
       }

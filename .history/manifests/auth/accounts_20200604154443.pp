@@ -31,11 +31,10 @@ class cis_hardening::auth::accounts {
   }
 
   # Ensure Pasword Expiration warning days is 7 or more - Section 5.4.1.3
-  file_line { 'pass_warn_age':
-    ensure => 'present',
-    path   => '/etc/login.defs',
-    line   => 'PASS_WARN_AGE 7',
-    match  => '^PASS_WARN_AGE\ ',
+  exec { 'pass_warn_age':
+    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+    command => "perl -pi -e 's/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs",
+    onlyif  => "test ! `grep ^PASS_WARN_AGE /etc/login.defs |awk '{print \$2}'` -lt 7",
   }
 
   # Ensure inactive password lock is 30 days or less - Section 5.4.1.4
@@ -58,36 +57,34 @@ class cis_hardening::auth::accounts {
   }
 
   # Ensure default user umask is 027 or more restrictive - Section 5.4.4
-  file { '/etc/profile.d/cisumaskprofile.sh':
-    ensure  => 'present',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => 'umask 027',
+  exec { 'set_login_umask_etcprofile':
+    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+    command => 'echo "umask 027" >> /etc/profile',
+    onlyif  => 'test ! `grep umask |grep 027 /etc/profile`',
+    unless  => 'test `grep umask /etc/profile`',
   }
 
-  file { '/etc/profile.d/cisumaskbashrc.sh':
-    ensure  => 'present',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => 'umask 027',
+  exec { 'set_login_umask_etcbashrc':
+    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+    command => "perl -pi -e 's/umask.*$/umask 027/' /etc/bashrc",
+    unless  => 'test `grep umask /etc/bashrc`',
   }
 
   # Ensure default user shell tieout is 900 seconds or less - Section 5.4.5
-  file_line { 'set_user_timeout_etcprofile':
-    ensure => 'present',
-    path   => '/etc/profile',
-    line   => 'TMOUT=600',
-    match  => '^TMOUT\=',
+  exec { 'set_user_timeout_etcprofile':
+    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+    command => 'echo TMOUT=600 >> /etc/profile',
+    onlyif  => 'test ! `grep ^TMOUT /etc/profile`',
+    unless  => 'test `grep ^TMOUT /etc/profile`',
   }
 
-  file_line { 'set_user_timeout_etcbashrc':
-    ensure => 'present',
-    path   => '/etc/bashrc',
-    line   => 'TMOUT=600',
-    match  => '^TMOUT\=',
+  exec { 'set_user_timeout_etcbashrc':
+    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+    command => 'echo "TMOUT=600" >> /etc/bashrc',
+    onlyif  => 'test ! `grep TMOUT /etc/bashrc`',
+    unless  => "test `grep TMOUT /etc/bashrc |awk -F '=' '{print \$2}'` -ne 600",
   }
+
   # Ensure root login is restricted to system console - Section 5.5
   # Given this is AWS, the physical console is unavailable. This
   # cannot occur in a virtualized environment the way this rule is intended.

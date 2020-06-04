@@ -18,44 +18,49 @@ describe 'cis_hardening::logaudit::accounting' do
 
       # Ensure that Ensure audit log storage size is configured - Section 4.1.1.1
       it {
-        is_expected.to contain_exec('set_auditd_logfile_size').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^max_log_file.*$/max_log_file = 1024' /etc/audit/auditd.conf",
-          'onlyif'  => "grep '^max_log_file' /etc/audit/auditd.conf",
+        is_expected.to contain_file_line('set_auditd_logfile_size').with(
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'max_log_file = 1024',
+          match  => '^max_log_file\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       # Ensure that system is disabled when audit logs are full - Section 4.1.1.2
       it {
-        is_expected.to contain_exec('full_logfile_notify_action').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^space_left_action.*$/space_left_action = email/' /etc/audit/auditd.conf",
-          'onlyif'  => "grep '^^space_left_action' /etc/audit/auditd.conf",
+        is_expected.to contain_file_line('full_logfile_notify_action').with(
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'space_left_action = email',
+          match  => '^space_left_action\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       it {
-        is_expected.to contain_exec('set_action_mail_account').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^action_mail_acct.*$/action_mail_acct = root' /etc/audit/auditd.conf",
-          'onlyif'  => "grep '^mail_action_acct' /etc/audit/auditd.conf",
+        is_expected.to contain_file_line('set_action_mail_account').with(
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'action_mail_acct = root',
+          match  => '^action_mail_acct\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       it {
-        is_expected.to contain_exec('set_admin_space_left_action').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^admin_space_left_action.*$/admin_space_left_action = SYSLOG/' /etc/audit/auditd.conf",
-          'onlyif'  => "grep '^admin_space_left_action' /etc/audit/auditd.conf",
-      ).that_notifies('Exec[restart_auditd]')
+        is_expected.to contain_file_line('set_admin_space_left_action').with(
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'admin_space_left_action = SYSLOG',
+          match  => '^admin_space_left_action\ \=',
+        ).that_notifies('Exec[restart_auditd]')
       }
 
       # Ensure that Ensure audit logs are not automatically deleted - Section 4.1.1.3
       it {
-        is_expected.to contain_exec('set_max_logfile_action').with(
-          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
-          'command' => "perl -pi -e 's/^max_log_file_action.*$/max_log_file_action = keep_logs' /etc/audit/auditd.conf",
-          'onlyif'  => "grep '^max_log_file_action' /etc/audit/auditd.conf",
+        is_expected.to contain_file_line('set_max_logfile_action').with(
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'max_log_file_action = keep_logs',
+          match  => '^max_log_file_action\ \=',
         )
       }
 
@@ -143,7 +148,7 @@ describe 'cis_hardening::logaudit::accounting' do
       it {
         is_expected.to contain_file_line('ownerchange_gshadow').with(
           'ensure' => 'present',
-          'path'   => '/etc/audot/audit.rules',
+          'path'   => '/etc/audit/audit.rules',
           'line'   => '-w /etc/gshadow -p wa -k identity',
         )
       }
@@ -256,106 +261,138 @@ describe 'cis_hardening::logaudit::accounting' do
         )
       }
 
-      it { is_expected.to contain_file_line('btmp_entry').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /var/run/btmp -p wa -k logins',
-      ) }
+      it {
+        is_expected.to contain_file_line('btmp_entry').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-w /var/run/btmp -p wa -k logins',
+        )
+      }
 
       # Ensure that Ensure discretionary access control permission modification events are collected - Section 4.1.10
-      it { is_expected.to contain_file_line('chmod_cmds').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod',
-      ) }
+      it {
+        is_expected.to contain_file_line('chmod_cmds').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod',
+        )
+      }
 
-      it { is_expected.to contain_file_line('chown_cmds').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod',
-      ) }
+      it {
+        is_expected.to contain_file_line('chown_cmds').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod',
+        )
+      }
 
-      it { is_expected.to contain_file_line('xattr_cmds').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod',
-      ) }
+      it {
+        is_expected.to contain_file_line('xattr_cmds').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod',
+        )
+      }
 
       # Ensure that Ensure unsuccessful unauthorized file access attempts are collected - Section 4.1.11
-      it { is_expected.to contain_file_line('file_truncate').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access',
-      ) }
+      it {
+        is_expected.to contain_file_line('file_truncate').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access',
+        )
+      }
 
       # Ensure that Ensure use of privileged commands is collected - Section 4.1.12 **unused**
 
       # Ensure that Ensure succesful filesystem mounts are collected - Section 4.1.13
-      it { is_expected.to contain_file_line('mount_cmds').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
-      ) }
+      it {
+        is_expected.to contain_file_line('mount_cmds').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
+        )
+      }
 
       # Ensure that Ensure file deletion events by users are captured - Section 4.1.14
-      it { is_expected.to contain_file_line('file_deletions').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
-      ) }
+      it {
+        is_expected.to contain_file_line('file_deletions').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
+        )
+      }
 
       # Ensure that Ensure changes to system administration scope (sudoers) is collected - Section 4.1.15
-      it { is_expected.to contain_file_line('sudoers_file').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /etc/sudoers -p wa -k scope',
-      ) }
+      it {
+        is_expected.to contain_file_line('sudoers_file').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-w /etc/sudoers -p wa -k scope',
+        )
+      }
 
-      it { is_expected.to contain_file_line('sudoers_dir').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /etc/sudoers.d/ -p wa -k scope',
-      ) }
+      it {
+        is_expected.to contain_file_line('sudoers_dir').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-w /etc/sudoers.d/ -p wa -k scope',
+        )
+      }
 
       # Ensure that Ensure system administrator actions (sudolog) are collected - Section 4.1.16
-      it { is_expected.to contain_file_line('sudolog').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /var/log/sudo.log -p wa -k actions',
-      ) }
+      it {
+        is_expected.to contain_file_line('sudolog').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-w /var/log/sudo.log -p wa -k actions',
+        )
+      }
 
       # Ensure that Ensure Kernel module loading and unloading are collected - Section 4.1.17
-      it { is_expected.to contain_file_line('check_insmod').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /sbin/insmod -p x -k modules',
-      ) }
+      it {
+        is_expected.to contain_file_line('check_insmod').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-w /sbin/insmod -p x -k modules',
+        )
+      }
 
-      it { is_expected.to contain_file_line('check_rmmod').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /sbin/rmmod -p x -k modules',
-      ) }
+      it {
+        is_expected.to contain_file_line('check_rmmod').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-w /sbin/rmmod -p x -k modules',
+        )
+      }
 
-      it { is_expected.to contain_file_line('check_modprobe').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-w /sbin/modprobe -p x -k modules',
-      ) }
+      it {
+        is_expected.to contain_file_line('check_modprobe').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-w /sbin/modprobe -p x -k modules',
+        )
+      }
 
-      it { is_expected.to contain_file_line('check_modulestate').with(
-        'ensure' => 'present',
-        'path'   => '/etc/audit/audit.rules',
-        'line'   => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
-      ) }
+      it {
+        is_expected.to contain_file_line('check_modulestate').with(
+          'ensure' => 'present',
+          'path'   => '/etc/audit/audit.rules',
+          'line'   => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
+        )
+      }
 
-      it { is_expected.to contain_exec('make_auditd_immutable').with(
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbn',
-        'command' => "perl -0777 -pi -e 's/$/ -e 2/' /etc/audit/audit.rules",
-      ) }
+      it {
+        is_expected.to contain_exec('make_auditd_immutable').with(
+          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbn',
+          'command' => "perl -0777 -pi -e 's/$/ -e 2/' /etc/audit/audit.rules",
+        )
+      }
 
       # Ensure manifest compiles with all dependencies
-      it { is_expected.to compile.with_all_deps }
+      it {
+        is_expected.to compile.with_all_deps
+      }
     end
   end
 end

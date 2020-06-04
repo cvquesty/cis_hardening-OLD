@@ -47,7 +47,7 @@ require 'spec_helper_acceptance'
     its(:content) { should match /-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod/ }
-    its(:content) { should match /-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access/ }
+    its(:content) { should match /-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid !=4294967295 -k access/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete/ }
     its(:content) { should match /-w \/etc\/sudoers -p wa -k scope/ }

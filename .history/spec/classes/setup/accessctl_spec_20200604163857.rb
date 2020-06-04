@@ -25,7 +25,7 @@ describe 'cis_hardening::setup::accessctl' do
           'ensure' => 'present',
           'path'   => '/etc/default/grub',
           'line'   => 'GRUB_CMDLINE_LINUX="audit=1"',
-          'match'  => '^GRUB_CMDLINE_LINUX\=',
+    match  => '^GRUB_CMDLINE_LINUX\=',
         )
       }
 

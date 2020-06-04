@@ -108,7 +108,7 @@ class cis_hardening::logaudit::accounting {
   file_line { 'pre_auditd_settings':
     ensure  => 'present',
     path    => '/etc/default/grub',
-    line    => 'GRUB_CMDLINE_LINUX="audit=1"',
+    line    => 'GRUB_CMDLINE_LINUX\=\"audit\=1\"',
     require => File['/etc/default/grub'],
   }
 

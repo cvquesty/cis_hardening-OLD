@@ -109,6 +109,7 @@ class cis_hardening::logaudit::accounting {
     ensure  => 'present',
     path    => '/etc/default/grub',
     line    => 'GRUB_CMDLINE_LINUX="audit=1"',
+    match   => '^GRUB_CMDLINE_LINUX=',
     require => File['/etc/default/grub'],
   }
 
@@ -332,11 +333,8 @@ class cis_hardening::logaudit::accounting {
   }
 
   # Ensure the audit configuration is immutable - Section 4.1.18
-  file_line { 'make_auditd_immutable':
-    ensure             => 'present',
-    path               => '/etc/audit/audit.rules',
-    line               => '-e 2',
-    match              => '^-e\ ',
-    append_on_no_match => true,
+  exec { 'make_auditd_immutable':
+    path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbn',
+    command => "perl -0777 -pi -e 's/$/ -e 2/' /etc/audit/audit.rules",
   }
 }

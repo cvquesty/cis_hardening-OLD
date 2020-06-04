@@ -78,20 +78,18 @@ describe 'cis_hardening::auth::accounts' do
 
       # Check that Ensure default user shell tieout is 900 seconds or less - Section 5.4.5
       it {
-        is_expected.to contain_file_line('set_user_timeout_etcprofile').with(
-          'ensure' => 'present',
-          'path'   => '/etc/profile',
-          'line'   => 'TMOUT=600',
-          'match'  => '^TMOUT\=',
+        is_expected.to contain_exec('set_user_timeout_etcprofile').with(
+          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+          'command' => "echo TMOUT=600 >> /etc/profile",
+          'onlyif'  => 'test ! `grep ^TMOUT /etc/profile`',
         )
       }
 
       it {
-        is_expected.to contain_file_line('set_user_timeout_etcbashrc').with(
-          'ensure' => 'present',
-          'path'   => '/etc/bashrc',
-          'line'   => 'TMOUT=600',
-          'match'  => '^TMOUT\=',
+        is_expected.to contain_exec('set_user_timeout_etcbashrc').with(
+          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+          'command' => "echo \"TMOUT=600\" >> /etc/bashrc",
+          'onlyif'  => 'test ! `grep TMOUT /etc/bashrc`',
         )
       }
 

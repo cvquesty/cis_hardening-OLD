@@ -24,8 +24,8 @@ describe 'cis_hardening::setup::accessctl' do
         is_expected.to contain_file_line('grub_selinux').with(
           'ensure' => 'present',
           'path'   => '/etc/default/grub',
-          'line'   => 'GRUB_CMDLINE_LINUX=""',
-          'match'  => '^GRUB_CMDLINE_LINUX\=',
+          'line'   => 'GRUB_CMDLINE_LINUX="audit=1"',
+          match  => '^GRUB_CMDLINE_LINUX\=',
         )
       }
 
@@ -43,7 +43,7 @@ describe 'cis_hardening::setup::accessctl' do
       it {
         is_expected.to contain_file_line('selinux_policy').with(
           'ensure' => 'present',
-          'path'   => '/etv/selinux/config',
+          'path'   => '/etc/selinux/config',
           'line'   => 'SELINUXTYPE=targeted',
           'match'  => '^SELINUXTYPE\=',
         )

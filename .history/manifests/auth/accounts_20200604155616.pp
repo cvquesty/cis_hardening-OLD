@@ -80,8 +80,7 @@ class cis_hardening::auth::accounts {
     path   => '/etc/profile',
     line   => 'TMOUT=600',
     match  => '^TMOUT\=',
-  }
-
+  
   file_line { 'set_user_timeout_etcbashrc':
     ensure => 'present',
     path   => '/etc/bashrc',

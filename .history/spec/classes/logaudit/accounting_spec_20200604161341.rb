@@ -19,48 +19,48 @@ describe 'cis_hardening::logaudit::accounting' do
       # Ensure that Ensure audit log storage size is configured - Section 4.1.1.1
       it {
         is_expected.to contain_file_line('set_auditd_logfile_size').with(
-          'ensure' => 'present',
-          'path'   => '/etc/audit/auditd.conf',
-          'line'   => 'max_log_file = 1024',
-          'match'  => '^max_log_file\ \=',
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'max_log_file = 1024',
+          match  => '^max_log_file\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       # Ensure that system is disabled when audit logs are full - Section 4.1.1.2
       it {
         is_expected.to contain_file_line('full_logfile_notify_action').with(
-          'ensure' => 'present',
-          'path'   => '/etc/audit/auditd.conf',
-          'line'   => 'space_left_action = email',
-          'match'  => '^space_left_action\ \=',
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'space_left_action = email',
+          match  => '^space_left_action\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       it {
         is_expected.to contain_file_line('set_action_mail_account').with(
-          'ensure' => 'present',
-          'path'   => '/etc/audit/auditd.conf',
-          'line'   => 'action_mail_acct = root',
-          'match'  => '^action_mail_acct\ \=',
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'action_mail_acct = root',
+          match  => '^action_mail_acct\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       it {
         is_expected.to contain_file_line('set_admin_space_left_action').with(
-          'ensure' => 'present',
-          'path'   => '/etc/audit/auditd.conf',
-          'line'   => 'admin_space_left_action = SYSLOG',
-          'match'  => '^admin_space_left_action\ \=',
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'admin_space_left_action = SYSLOG',
+          match  => '^admin_space_left_action\ \=',
         ).that_notifies('Exec[restart_auditd]')
       }
 
       # Ensure that Ensure audit logs are not automatically deleted - Section 4.1.1.3
       it {
         is_expected.to contain_file_line('set_max_logfile_action').with(
-          'ensure' => 'present',
-          'path'   => '/etc/audit/auditd.conf',
-          'line'   => 'max_log_file_action = keep_logs',
-          'match'  => '^max_log_file_action\ \=',
+          ensure => 'present',
+          path   => '/etc/audit/auditd.conf',
+          line   => 'max_log_file_action = keep_logs',
+          match  => '^max_log_file_action\ \=',
         )
       }
 
@@ -96,9 +96,9 @@ describe 'cis_hardening::logaudit::accounting' do
       # Ensure that Ensure auditing for processes that start prior to auditd is enabled - Section 4.1.3
       it {
         is_expected.to contain_file_line('pre_auditd_settings').with(
-          'ensure' => 'present',
-          'path'   => '/etc/default/grub',
-          'line'   => 'GRUB_CMDLINE_LINUX="audit=1"',
+          ensure  => 'present',
+          path    => '/etc/default/grub',
+          line    => 'GRUB_CMDLINE_LINUX="audit=1"',
         ).that_requires('File[/etc/default/grub]')
       }
 
@@ -382,12 +382,9 @@ describe 'cis_hardening::logaudit::accounting' do
       }
 
       it {
-        is_expected.to contain_file_line('make_auditd_immutable').with(
-          'ensure'           => 'present',
-          'path'               => '/etc/audit/audit.rules',
-          'line'               => '-e 2',
-          'match'              => '^-e\ ',
-          'append_on_no_match' => true,
+        is_expected.to contain_exec('make_auditd_immutable').with(
+          'path'    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbn',
+          'command' => "perl -0777 -pi -e 's/$/ -e 2/' /etc/audit/audit.rules",
         )
       }
 
