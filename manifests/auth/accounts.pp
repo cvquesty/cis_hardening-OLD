@@ -18,7 +18,7 @@ class cis_hardening::auth::accounts {
   exec { 'pass_max_days':
     path    => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
     command => "perl -pi -e 's/^PASS_MAX_DAYS.*$/PASS_MAX_DAYS 365/' /etc/login.defs",
-    onlyif  => "test ! `grep ^PASS_MAX_DAYS /etc/login.defs |awk '{print \$2}'` -gt 365",
+    unless  => "test ! `grep ^PASS_MAX_DAYS /etc/login.defs |awk '{print \$2}'` -gt 365",
   }
 
   # Ensure minimum days between password changes is 7 or more - Section 5.4.1.2
