@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
   
   # Ensure that audit is installed
   describe package('audit') do
-    it { should be_installed }
+      it { should be_installed }
   end
 
   # Make sure rules file is present
@@ -65,11 +65,11 @@ require 'spec_helper_acceptance'
   # Ensure audit logs are not automatically deleted - Section 4.1.1.3
   describe file('/etc/audit/audit.conf') do
     it { is_expected.to be_file }
-    its (:content) { should match /max_log_file = 1024/ }
-    its (:content) { should match /space_left_action = email/ }
-    its (:content) { should match /action_mail_acct = root/ }
-    its (:content) { should match /admin_space_left_action = SYSLOG/ }
-    its (:content) { should match /max_log_file_action = keep_logs/ }
+    it { is_expected.to contain 'max_log_file = 1024' }
+    it { is_expected.to contain 'space_left_action = email' }
+    it { is_expected.to contain 'action_mail_acct = root' }
+    it { is_expected.to contain 'admin_space_left_action = SYSLOG' }
+    it { is_expected.to contain 'max_log_file_action = keep_logs' }
   end
   
   # Ensure auditd service is enabled - Section 4.1.2
@@ -89,9 +89,15 @@ require 'spec_helper_acceptance'
   end
 
   describe file('/etc/default/grub') do
-    it { is_expected.to be_file }
-    it { is_expected.to be_owned_by 'root' }
-    it { is_expected.to be_grouped_into 'root' }
-    it { is_expected.to be_mode 644 }
-    its (:content) { should match /GRUB_CMDLINE_LINUX="audit=1"/ }
+    it do
+      is_expected.to be_file
+      is_expected.to be_owned_by 'root'
+      is_expected.to be_grouped_into 'root'
+      is_expected.to be_mode 644
+      is_expected.to contain 'GRUB_CMDLINE_LINUX="audit=1"'
+    end
   end
+
+
+    
+end

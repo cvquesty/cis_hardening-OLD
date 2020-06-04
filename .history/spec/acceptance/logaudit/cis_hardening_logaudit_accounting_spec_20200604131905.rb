@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
   
   # Ensure that audit is installed
   describe package('audit') do
-    it { should be_installed }
+      it { should be_installed }
   end
 
   # Make sure rules file is present
@@ -95,3 +95,7 @@ require 'spec_helper_acceptance'
     it { is_expected.to be_mode 644 }
     its (:content) { should match /GRUB_CMDLINE_LINUX="audit=1"/ }
   end
+
+
+    
+end
