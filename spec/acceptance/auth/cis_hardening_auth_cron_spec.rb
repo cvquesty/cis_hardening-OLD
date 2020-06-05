@@ -10,7 +10,7 @@ require 'spec_helper_acceptance'
     it { is_expected.to be_file }
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_grouped_into 'root' }
-    it { is_expected.to be_mode 644
+    it { is_expected.to be_mode 644 }
   end
 
   # Ensure permissions on /etc/cron.hourly are configured - Section 5.1.3
