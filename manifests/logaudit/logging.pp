@@ -19,7 +19,7 @@ class cis_hardening::logaudit::logging {
   }
 
   # Ensure logging is configured - Section 4.2.1.2
-  # Default logging setup covers all suggested filters in rsyslog for RHEL/CentOS 7  
+  # Default logging setup covers all suggested filters in rsyslog for RHEL/CentOS 7
 
   # Ensre rsyslog default file permissions configured - Section 4.2.1.3
   file_line { 'logfile_perms':

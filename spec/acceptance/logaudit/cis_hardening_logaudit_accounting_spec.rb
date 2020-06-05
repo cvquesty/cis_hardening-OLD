@@ -19,6 +19,7 @@ require 'spec_helper_acceptance'
   # Ensure changes to system administration scope (sudoers) is collected - Section 4.1.15
   # Ensure system administrator actions (sudolog) are collected - Section 4.1.16
   # Ensure Kernel module loading and unloading are collected - Section 4.1.17
+  # Ensure the audit configuration is immutable - Section 4.1.18
   describe file('/etc/audit/audit.rules') do
     it { is_expected.to be_file }
     it { is_expected.to be_owned_by 'root' }
@@ -57,6 +58,7 @@ require 'spec_helper_acceptance'
     its(:content) { should match /-w \/sbin\/rmmod -p x -k modules/ }
     its(:content) { should match /-w \/sbin\/modprobe -p x -k modules/ }
     its(:content) { should match /-a always,exit -F arch=b64 -S init_module -S delete_module -k modules/ }
+    its(:content) { should match /-e 2/ }
   end
 
   # Check AuditD Configuration Options
