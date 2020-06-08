@@ -80,15 +80,14 @@ class cis_hardening::auth::accounts {
     path    => '/etc/profile.d/cisumaskprofile.sh',
     line    => 'TMOUT=600',
     match   => '^TMOUT\=',
-    require => File['/etc/profile.d/cisumaskprofile.sh'],
+    require => 
   }
 
   file_line { 'set_user_timeout_etcbashrc':
-    ensure  => 'present',
-    path    => '/etc/profile.d/cisumaskbashrc.sh',
-    line    => 'TMOUT=600',
-    match   => '^TMOUT\=',
-    require => File['/etc/profile.d/cisumaskbashrc.sh'],
+    ensure => 'present',
+    path   => '/etc/bashrc',
+    line   => 'TMOUT=600',
+    match  => '^TMOUT\=',
   }
   # Ensure root login is restricted to system console - Section 5.5
   # Given this is AWS, the physical console is unavailable. This

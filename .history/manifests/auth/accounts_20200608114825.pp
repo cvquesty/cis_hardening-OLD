@@ -84,9 +84,9 @@ class cis_hardening::auth::accounts {
   }
 
   file_line { 'set_user_timeout_etcbashrc':
-    ensure  => 'present',
-    path    => '/etc/profile.d/cisumaskbashrc.sh',
-    line    => 'TMOUT=600',
+    ensure => 'present',
+    path   => '/etc/profile.d/cisumaskbashrc.sh',
+    line   => 'TMOUT=600',
     match   => '^TMOUT\=',
     require => File['/etc/profile.d/cisumaskbashrc.sh'],
   }

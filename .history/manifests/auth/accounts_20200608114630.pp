@@ -76,19 +76,17 @@ class cis_hardening::auth::accounts {
 
   # Ensure default user shell tieout is 900 seconds or less - Section 5.4.5
   file_line { 'set_user_timeout_etcprofile':
-    ensure  => 'present',
-    path    => '/etc/profile.d/cisumaskprofile.sh',
-    line    => 'TMOUT=600',
-    match   => '^TMOUT\=',
-    require => File['/etc/profile.d/cisumaskprofile.sh'],
+    ensure => 'present',
+    path   => '/etc/profile.d',
+    line   => 'TMOUT=600',
+    match  => '^TMOUT\=',
   }
 
   file_line { 'set_user_timeout_etcbashrc':
-    ensure  => 'present',
-    path    => '/etc/profile.d/cisumaskbashrc.sh',
-    line    => 'TMOUT=600',
-    match   => '^TMOUT\=',
-    require => File['/etc/profile.d/cisumaskbashrc.sh'],
+    ensure => 'present',
+    path   => '/etc/bashrc',
+    line   => 'TMOUT=600',
+    match  => '^TMOUT\=',
   }
   # Ensure root login is restricted to system console - Section 5.5
   # Given this is AWS, the physical console is unavailable. This

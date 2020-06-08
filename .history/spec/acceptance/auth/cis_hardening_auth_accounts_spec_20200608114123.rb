@@ -18,13 +18,13 @@ require 'spec_helper_acceptance'
 
   # Ensure default user umask is 027 or more restrictive - Section 5.4.4
   # Ensure default user shell tieout is 900 seconds or less - Section 5.4.5
-  describe file('/etc/profile.d/cisumaskprofile.sh') do
+  describe file('/etc/profile.d/cisumaskbash') do
     it { is_expected.to be_file }
     its(:content) { should match /umask 027/ }
     its(:content) { should match /TMOUT=600/ }
   end
 
-  describe file('/etc/profile.d/cisumaskbashrc.sh') do
+  describe file('/etc/bashrc') do
     it { is_expected.to be_file }
     its(:content) { should match /umask 027/ }
     its(:content) { should match /TMOUT=600/ }

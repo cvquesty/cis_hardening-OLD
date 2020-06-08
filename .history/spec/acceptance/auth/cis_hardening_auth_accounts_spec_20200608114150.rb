@@ -24,7 +24,7 @@ require 'spec_helper_acceptance'
     its(:content) { should match /TMOUT=600/ }
   end
 
-  describe file('/etc/profile.d/cisumaskbashrc.sh') do
+  describe file('/etc/profile.d') do
     it { is_expected.to be_file }
     its(:content) { should match /umask 027/ }
     its(:content) { should match /TMOUT=600/ }
