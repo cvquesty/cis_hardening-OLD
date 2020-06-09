@@ -22,7 +22,7 @@ class cis_hardening::services::special {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    source  => 'puppet:///modules/cis_hardening/ntp_conf',
+    source  => 'puppet:///modules/cis_hardening/etc_ntp_conf',
     require => Package['ntp'],
   }
 
@@ -42,7 +42,7 @@ class cis_hardening::services::special {
     match  => '^ExecStart=/usr/sbin/ntpd -u ntp:ntp $OPTIONS',
   }
 
-  # Ensure Chrony is configured - Section 2.2.1.3
+ # Ensure Chron y is configured - Section 2.2.1.3
   file { '/etc/chrony.conf':
     ensure => 'present',
     owner  => 'root',

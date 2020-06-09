@@ -29,7 +29,7 @@ describe file('/usr/lib/systemd/system/ntpd.service') do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
     it { should be_mode 644 }
-    its(:content) { should match /ExecStart=\/usr\/sbin\/ntpd -u ntp:ntp \$OPTIONS/ }
+    its(:content) { should match /ExecStart=\/usr\/sbin\/ntpd -u ntp:ntp $OPTIONS/ }
 end
 
 # Ensure Chrony is configured - Section 2.2.1.3
@@ -65,7 +65,7 @@ end
 
 # Ensure DHCP Server is not enabled - Section 2.2.5
 describe service('dhcpd') do
-    it { should_not be_running }
+    it { should_not running }
 end
 
 # Ensure LDAP Server is not enabled - Section 2.2.6
@@ -92,78 +92,9 @@ describe service('named') do
 end
 
 # Ensure FTP Server is not enabled - Section 2.2.9
-describe service('vsftpd') do
+describe package('vsftpd') do
     it { should_not be_running }
 end
 
-# Ensure HTTP Server is not enabled - Section 2.2.10
-describe service('httpd') do
-    it { should_not be_running }
-end
 
-# Ensure IMAP and POP3 Server are not enabled - Section 2.2.11
-describe service('dovecot') do
-    it { should_not be_running }
-end
 
-# Ensure Samba is not enabled - Section 2.2.12
-describe service('smb') do
-    it { should_not be_running }
-end
-
-# Ensure HTTP Proxy Server is not enabled - Section 2.2.13
-describe service('squid') do
-    it { should_not be_running }
-end
-
-# Ensure SNMP Server is not enabled - Section 2.2.14
-describe service('snmpd') do
-    it { should_not be_running }
-end
-
-# Ensure MTA is configured for local-only mode - Section 2.2.15
-describe file('/etc/postfix/main.cf') do
-    it { should be_file }
-    it { should be_owned_by 'root' }
-    it { should be_grouped_into 'root' }
-    it { should be_mode 644 }
-    its(:content) { should match /inet_interfaces = loopback-only/ }
-end
-
-# Ensure NIS Server is not enabled - Section 2.2.16
-describe service('yserv') do
-    it { should_not be_running }
-end
-
-# Ensure RSH Server is not enabled - Section 2.2.17
-describe service('rsh.socket') do
-    it { should_not be_running }
-end
-
-describe service('rlogin.socket') do
-    it { should_not be_running }
-end
-
-describe service('rexec.socket') do
-    it { should_not be_running }
-end
-
-# Ensure Telnet Server is not enabled - Section 2.2.18
-describe service('telnet.socket') do
-    it { should_not be_running }
-end
-
-# Ensure tftp Server is not enabled - Section 2.2.19
-describe service('tftp.socket') do
-    it { should_not be_running }
-end
-
-# Ensure Rsync Service is not enabled - Section 2.2.20
-describe service('rsyncd') do
-    it { should_not be_running }
-end
-
-# Ensure Talk server is not enabled - Section 2.2.21
-describe service('ntalk') do
-    it { should_not be_running }
-end
