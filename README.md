@@ -1,6 +1,6 @@
 # cis_hardening
 
-Welcome to the CIS HArdening Module.
+Welcome to the CIS Hardening Module.
 
 #### Table of Contents
 
